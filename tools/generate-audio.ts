@@ -1,59 +1,51 @@
-// Generates every clip the app needs with Azure TTS. Usage: npm run audio
-// Needs AZURE_SPEECH_KEY and AZURE_SPEECH_REGION in .env. Only new or changed clips are requested.
+// Generates every clip the app needs with Microsoft Edge's read-aloud voices (msedge-tts).
+// Usage: npm run audio. No account or key needed. Only new or changed clips are requested.
+// Note: this is an unofficial client of the Edge read-aloud service; generated files are committed,
+// so the app keeps working even if the service changes.
 import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { setTimeout as sleep } from 'node:timers/promises'
+import { MsEdgeTTS, OUTPUT_FORMAT } from 'msedge-tts'
 import { allClips, type ClipSpec, type Manifest } from '../content/clips'
 import { content } from '../content/index'
 import { VOICE } from './audio-config'
-import { buildSsml, clipFileName } from './audio-lib'
+import { clipFileName } from './audio-lib'
 
 const OUT = 'public/audio'
-const SPACING_MS = 3100 // free tier allows 20 requests per minute
-const MAX_RETRIES = 5
+const SPACING_MS = 300 // be gentle with the service
+const MAX_ATTEMPTS = 3
 
-process.loadEnvFile()
-const key = process.env.AZURE_SPEECH_KEY
-const region = process.env.AZURE_SPEECH_REGION
-if (!key || !region) {
-  console.error('Set AZURE_SPEECH_KEY and AZURE_SPEECH_REGION in .env')
-  process.exit(1)
-}
-
-async function synthesize(spec: ClipSpec): Promise<Buffer> {
-  for (let attempt = 0; ; attempt++) {
-    const res = await fetch(`https://${region}.tts.speech.microsoft.com/cognitiveservices/v1`, {
-      method: 'POST',
-      headers: {
-        'Ocp-Apim-Subscription-Key': key!,
-        'Content-Type': 'application/ssml+xml',
-        'X-Microsoft-OutputFormat': 'audio-24khz-48kbitrate-mono-mp3',
-        'User-Agent': 'reading-app',
-      },
-      body: buildSsml(VOICE, spec),
-    })
-    if (res.ok) return Buffer.from(await res.arrayBuffer())
-    if (res.status === 429 && attempt < MAX_RETRIES) {
-      const wait = Number(res.headers.get('Retry-After') ?? 10) * 1000
-      console.log(`  rate limited, waiting ${wait / 1000}s`)
-      await sleep(wait)
-      continue
+async function synthesize(tts: MsEdgeTTS, spec: ClipSpec): Promise<Buffer> {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      const { audioStream } = tts.toStream(spec.text, spec.rate ? { rate: spec.rate } : undefined)
+      const chunks: Buffer[] = []
+      for await (const chunk of audioStream) chunks.push(chunk as Buffer)
+      const audio = Buffer.concat(chunks)
+      if (audio.length === 0) throw new Error('empty audio')
+      return audio
+    } catch (e) {
+      if (attempt >= MAX_ATTEMPTS) throw new Error(`${spec.key}: ${(e as Error).message}`)
+      console.log(`  retrying ${spec.key}`)
+      await sleep(2000 * attempt)
     }
-    throw new Error(`${spec.key}: HTTP ${res.status} ${await res.text()}`)
   }
 }
 
 mkdirSync(OUT, { recursive: true })
+const tts = new MsEdgeTTS()
+await tts.setMetadata(VOICE, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3)
+
 const manifest: Manifest = {}
 const specs = allClips(content)
 const todo = specs.filter((s) => !existsSync(`${OUT}/${clipFileName(VOICE, s)}`))
-console.log(`${specs.length} clips, ${todo.length} to generate`)
+console.log(`${specs.length} clips, ${todo.length} to generate with ${VOICE}`)
 
 let failed = false
 for (const spec of specs) {
   const file = clipFileName(VOICE, spec)
   if (!existsSync(`${OUT}/${file}`)) {
     try {
-      writeFileSync(`${OUT}/${file}`, await synthesize(spec))
+      writeFileSync(`${OUT}/${file}`, await synthesize(tts, spec))
       console.log(`  ✓ ${spec.key}`)
       await sleep(SPACING_MS)
     } catch (e) {
@@ -64,6 +56,7 @@ for (const spec of specs) {
   }
   manifest[spec.key] = file
 }
+tts.close()
 
 const sorted = Object.fromEntries(Object.entries(manifest).sort(([a], [b]) => a.localeCompare(b)))
 writeFileSync(`${OUT}/manifest.json`, JSON.stringify(sorted, null, 2) + '\n')

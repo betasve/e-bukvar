@@ -32,11 +32,11 @@ test('allClips keys are unique', () => {
   expect(new Set(keys).size).toBe(keys.length)
 })
 
-test('overrides replace text or add ssml', () => {
+test('overrides replace text or set a speaking rate', () => {
   const clips = byKey({
     ...content,
-    overrides: { 'letter:М': { text: 'ммм' }, 'syl:МА': { ssml: '<prosody rate="-20%">ма</prosody>' } },
+    overrides: { 'letter:М': { text: 'ммм' }, 'syl:МА': { rate: '-25%' } },
   })
   expect(clips.get('letter:М')).toEqual({ key: 'letter:М', text: 'ммм' })
-  expect(clips.get('syl:МА')).toEqual({ key: 'syl:МА', text: 'ма', ssml: '<prosody rate="-20%">ма</prosody>' })
+  expect(clips.get('syl:МА')).toEqual({ key: 'syl:МА', text: 'ма', rate: '-25%' })
 })

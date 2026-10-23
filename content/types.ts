@@ -56,8 +56,8 @@ export interface Phrase {
 }
 
 export interface ClipOverride {
-  text?: string
-  ssml?: string
+  text?: string // spoken instead of the default text
+  rate?: string // speaking rate, e.g. '-25%'
 }
 
 export interface Content {

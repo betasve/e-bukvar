@@ -6,3 +6,4 @@ dist/
 public/pictures/
 test-results/
 playwright-report/
+.venv/

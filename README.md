@@ -23,15 +23,10 @@ npm run check      # type check
 
 ## Audio
 
-All speech is generated once with Azure Text-to-Speech and committed under `public/audio/`, so the app itself needs no account or network.
+All speech is generated once with Microsoft Edge's Bulgarian read-aloud voices (via [`msedge-tts`](https://github.com/Migushthe2nd/MsEdgeTTS), no account needed) and committed under `public/audio/`, so the app itself needs no network. `msedge-tts` is an unofficial client of the Edge service; if it stops working, the committed clips keep the app working and only regenerating is affected.
 
-1. Create a free Azure Speech resource (F0 tier) and put its key and region in `.env`:
-   ```
-   AZURE_SPEECH_KEY=...
-   AZURE_SPEECH_REGION=westeurope
-   ```
-2. `npm run audio` generates any new or changed clips (the free tier allows ~20 requests a minute, so a first run takes a while).
-3. `npm run dev` and open `/review.html` to listen to every clip. Tick "лошо" on bad ones, copy the flagged keys, add fixes to `content/overrides.ts` (a different spelling or SSML), and run `npm run audio` again.
+1. `npm run audio` generates any new or changed clips.
+2. `npm run dev` and open `/review.html` to listen to every clip. Tick "лошо" on bad ones, copy the flagged keys, add fixes to `content/overrides.ts` (a different spelling, or a slower `rate` such as `'-25%'`), and run `npm run audio` again.
 
 The voice is set in `tools/audio-config.ts`.
 

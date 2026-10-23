@@ -5,7 +5,7 @@ import type { Content, LetterId, PhraseId } from './types'
 export interface ClipSpec {
   key: string
   text: string
-  ssml?: string
+  rate?: string
 }
 
 /** Clip key → audio file name. */
