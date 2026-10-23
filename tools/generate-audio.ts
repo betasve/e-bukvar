@@ -15,7 +15,7 @@ const SPACING_MS = 1000 // faster than this and the service answers 429 after ~6
 const MAX_ATTEMPTS = 6
 const BACKOFF_MS = 30_000 // grows linearly; a refused service needs a few minutes to cool down
 
-let tts: MsEdgeTTS
+let tts!: MsEdgeTTS // set by connect() before any use
 
 async function connect(): Promise<void> {
   for (let attempt = 1; ; attempt++) {
