@@ -1,3 +1,4 @@
+import { existsSync, readFileSync } from 'node:fs'
 import { expect, test } from 'vitest'
 import { allClips, clipKey } from './clips'
 import { content } from './index'
@@ -14,7 +15,8 @@ test('clip keys have a type prefix', () => {
 test('allClips covers letters, syllables, words and phrases with spoken text', () => {
   const clips = byKey()
   expect(clips.get('letter:А')?.text).toBe('а')
-  expect(clips.get('letter:М')?.text).toBe('мъ')
+  expect(clips.get('letter:Л')?.text).toBe('лъ')
+  expect(clips.get('letter:М')?.text).toBe('м') // override: "мъ" is read as "ем"
   expect(clips.get('syl:МА')?.text).toBe('ма')
   expect(clips.get('syl:АМ')?.text).toBe('ам')
   expect(clips.get('word:ЛИМОН')?.text).toBe('лимон')
@@ -25,6 +27,16 @@ test('allClips only includes letters taught in the journey', () => {
   const clips = byKey()
   expect(clips.has('letter:И')).toBe(true)
   expect(clips.has('letter:Б')).toBe(false)
+})
+
+test('every clip has a manifest entry and the file exists', () => {
+  const path = 'public/audio/manifest.json'
+  expect(existsSync(path), 'run npm run audio').toBe(true)
+  const manifest: Record<string, string> = JSON.parse(readFileSync(path, 'utf8'))
+  for (const spec of allClips(content)) {
+    expect(manifest[spec.key], spec.key).toBeTruthy()
+    expect(existsSync(`public/audio/${manifest[spec.key]}`), spec.key).toBe(true)
+  }
 })
 
 test('allClips keys are unique', () => {

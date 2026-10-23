@@ -28,7 +28,11 @@ async function openStop(page: Page, stopId: string) {
   await expect(page.getByTestId('exercise')).toBeVisible()
 }
 
+// A full lesson plays every prompt, "Браво!" and sticker clip in real time (~35 s).
+const FULL_LESSON_MS = 120_000
+
 test('complete r1-s1 → sticker shown → r1-s2 unlocked', async ({ page }) => {
+  test.setTimeout(FULL_LESSON_MS)
   await startWithNewProfile(page)
   await openStop(page, 'r1-s1')
   while (!(await page.getByTestId('lesson-done').isVisible())) await solveOne(page)
@@ -63,6 +67,7 @@ test('wrong answer twice reveals the correct option', async ({ page }) => {
 })
 
 test('all options are within the viewport', async ({ page }) => {
+  test.setTimeout(FULL_LESSON_MS)
   await startWithNewProfile(page)
   await openStop(page, 'r1-s1')
   const viewport = page.viewportSize()!

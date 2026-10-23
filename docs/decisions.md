@@ -14,6 +14,8 @@
 - Risk: unofficial client of the Edge read-aloud service. Generated clips are committed, so the app is unaffected if the service changes; only regeneration would need another source.
 - Overrides support alternative text and a speaking `rate`; custom SSML is not available through this service.
 
-## Voice — pending
+## Voice — Kalina, normal speed (2026-10-23)
 
-Samples of both voices at normal and slow rate are in `spike/voices.html`; the user picks one. `tools/audio-config.ts` holds the voice (currently `bg-BG-KalinaNeural` as a placeholder).
+- `bg-BG-KalinaNeural` at the default rate, chosen by the user after listening to both voices at normal and slow speed.
+- Letter sounds use the "consonant + ъ" spelling (`лъ`, `нъ`), which sounds right — except М: `мъ` is read as the letter name "ем", and every variant (`ммъ`, `мъ.`, `Мъ`, …) failed except a bare `м`. So `content/overrides.ts` maps `letter:М` to `м`.
+- Other consonants (regions 3–6) may need their own overrides; check them on `/review.html` when they are added.
