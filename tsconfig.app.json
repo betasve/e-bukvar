@@ -17,5 +17,6 @@
     "checkJs": true,
     "moduleDetection": "force"
   },
-  "include": ["src/**/*.ts", "src/**/*.svelte", "ui/**/*.ts", "ui/**/*.svelte", "content/**/*.ts", "engine/**/*.ts", "storage/**/*.ts", "audio/**/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.svelte", "ui/**/*.ts", "ui/**/*.svelte", "content/**/*.ts", "engine/**/*.ts", "storage/**/*.ts", "audio/**/*.ts"],
+  "exclude": ["**/*.test.ts"]
 }
