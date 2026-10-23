@@ -2,8 +2,21 @@
   "extends": "./tsconfig.app.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.test.tsbuildinfo",
-    "types": ["svelte", "vite/client", "node"]
+    "types": [
+      "svelte",
+      "vite/client",
+      "node"
+    ]
   },
-  "include": ["**/*.test.ts"],
-  "exclude": ["node_modules", "e2e", "spike"]
+  "include": [
+    "**/*.test.ts",
+    "tools/**/*.ts",
+    "e2e/**/*.ts",
+    "playwright.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "e2e",
+    "spike"
+  ]
 }
