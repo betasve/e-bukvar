@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="bg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Audio review</title>
+    <style>
+      body { font-family: system-ui, sans-serif; margin: 16px; max-width: 720px; background: #fff; color: #222; }
+      h2 { margin-top: 28px; font-size: 18px; }
+      .row { display: flex; align-items: center; gap: 12px; padding: 6px 0; border-bottom: 1px solid #eee; }
+      .row button { min-width: 44px; min-height: 44px; font-size: 18px; }
+      .text { flex: 1; font-size: 20px; }
+      .key { color: #888; font-size: 12px; }
+      .bad .text { color: #c0392b; }
+      .missing { color: #c0392b; }
+      #bar { position: sticky; top: 0; background: #fff; padding: 8px 0; display: flex; gap: 12px; align-items: center; }
+    </style>
+  </head>
+  <body>
+    <div id="bar"><strong>Audio review</strong><span id="count"></span><button id="copy">Copy flagged keys</button></div>
+    <div id="list"></div>
+    <script type="module" src="/tools/review/main.ts"></script>
+  </body>
+</html>
