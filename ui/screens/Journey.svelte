@@ -132,7 +132,6 @@
     letter-spacing: 2px;
     white-space: nowrap;
   }
-  .letters:has(+ *),
   .letters {
     font-size: clamp(22px, calc(64px / var(--n, 1)), 32px);
   }
@@ -164,9 +163,12 @@
     place-items: center;
     font-size: 20px;
   }
+  /* Ring glow, not a scale: the button itself stays put so it is easy to tap. */
   @keyframes pulse {
     50% {
-      transform: translate(-50%, -50%) scale(1.08);
+      box-shadow:
+        0 5px 0 color-mix(in srgb, var(--region) 60%, black),
+        0 0 0 12px color-mix(in srgb, var(--glow) 55%, transparent);
     }
   }
 </style>

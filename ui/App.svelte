@@ -9,6 +9,7 @@
   import { openStore, type Profile, type ProgressStore } from '../storage/store'
   import Album from './screens/Album.svelte'
   import Journey from './screens/Journey.svelte'
+  import Lesson from './screens/Lesson.svelte'
   import Profiles from './screens/Profiles.svelte'
   import Start from './screens/Start.svelte'
 
@@ -54,6 +55,17 @@
     onopen={(stopId) => (screen = { name: 'lesson', stopId })}
     onalbum={() => (screen = { name: 'album' })}
     onprofiles={() => (screen = { name: 'profiles' })}
+  />
+{:else if screen.name === 'lesson' && progress && store && player}
+  <Lesson
+    stopId={screen.stopId}
+    {progress}
+    {store}
+    {player}
+    onexit={(p) => {
+      progress = p
+      screen = { name: 'journey' }
+    }}
   />
 {:else if screen.name === 'album' && progress}
   <Album {progress} onback={() => (screen = { name: 'journey' })} />
