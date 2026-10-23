@@ -4,3 +4,5 @@ spike/
 node_modules/
 dist/
 public/pictures/
+test-results/
+playwright-report/

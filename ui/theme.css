@@ -1,0 +1,120 @@
+:root {
+  --bg: #fff8ec;
+  --card: #ffffff;
+  --ink: #2b2a33;
+  --muted: #9a958c;
+  --line: #eadfcb;
+  --accent: #ff8a3d;
+  --accent-ink: #ffffff;
+  --ok: #34a868;
+  --bad: #e2574c;
+  --glow: #ffd23f;
+  --r1: #7cc576; /* Поляна */
+  --r2: #3f9b6b; /* Гора */
+  --radius: 22px;
+  --font-print: 'Nunito', system-ui, sans-serif;
+  --font-hand: 'Bad Script', cursive;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-print);
+  font-weight: 700;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  overscroll-behavior: none;
+}
+
+#app {
+  min-height: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+button:focus-visible {
+  outline: 4px solid var(--glow);
+  outline-offset: 2px;
+}
+
+.big-button {
+  min-width: 64px;
+  min-height: 64px;
+  padding: 0 32px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 28px;
+  font-weight: 800;
+  box-shadow: 0 6px 0 #d96a22;
+  transition: transform 0.08s;
+}
+
+.big-button:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #d96a22;
+}
+
+.big-button:disabled {
+  opacity: 0.5;
+}
+
+.icon-button {
+  min-width: 64px;
+  min-height: 64px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--card);
+  box-shadow: 0 3px 0 var(--line);
+}
+
+.screen {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.print {
+  font-family: var(--font-print);
+  font-weight: 800;
+}
+
+.hand {
+  font-family: var(--font-hand);
+  font-weight: 400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
