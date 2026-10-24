@@ -51,18 +51,23 @@ async function synthesize(spec: ClipSpec): Promise<Buffer> {
 }
 
 mkdirSync(OUT, { recursive: true })
-await connect()
 
 const manifest: Manifest = {}
 const specs = allClips(content)
 const todo = specs.filter((s) => !existsSync(`${OUT}/${clipFileName(VOICE, s)}`))
 console.log(`${specs.length} clips, ${todo.length} to generate with ${VOICE}`)
 
+// Connect only when something is missing, so an unreachable service never blocks a manifest rebuild.
+let connected = false
 let failed = false
 for (const spec of specs) {
   const file = clipFileName(VOICE, spec)
   if (!existsSync(`${OUT}/${file}`)) {
     try {
+      if (!connected) {
+        await connect()
+        connected = true
+      }
       writeFileSync(`${OUT}/${file}`, await synthesize(spec))
       console.log(`  ✓ ${spec.key}`)
       await sleep(SPACING_MS)
@@ -74,7 +79,7 @@ for (const spec of specs) {
   }
   manifest[spec.key] = file
 }
-tts.close()
+if (connected) tts.close()
 
 const sorted = Object.fromEntries(Object.entries(manifest).sort(([a], [b]) => a.localeCompare(b)))
 writeFileSync(`${OUT}/manifest.json`, JSON.stringify(sorted, null, 2) + '\n')
