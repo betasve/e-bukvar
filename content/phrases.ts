@@ -8,7 +8,7 @@ export const phrases: Phrase[] = [
   { id: 'drag-blend', text: 'Събери буквите' },
   { id: 'find-syllable', text: 'Коя е сричката?' },
   { id: 'build-word', text: 'Подреди думата' },
-  { id: 'read-word', text: 'Прочети думата и намери картинката' },
+  { id: 'read-word', text: 'Какво пише тук? Коя е картинката?' },
   { id: 'bravo', text: 'Браво!' },
   { id: 'try-again', text: 'Опитай пак' },
   { id: 'sticker', text: 'Спечели стикер!' },
