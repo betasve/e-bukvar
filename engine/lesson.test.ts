@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
 import { allStops, content } from '../content'
 import { correctAnswer, isScored, itemIdFor, type Exercise } from './exercises'
-import { knownLettersThrough } from './known'
+import { knownLettersThrough, syllablesForStop } from './known'
 import { buildLesson } from './lesson'
 import { emptyProgress } from './progress'
 import { mulberry32 } from './rng'
@@ -13,7 +13,7 @@ test('first stop builds a valid lesson with only А and М known', () => {
   for (let seed = 1; seed <= 20; seed++) {
     const ex = lesson('r1-s1', seed)
     expect(ex.length).toBeGreaterThanOrEqual(8)
-    expect(ex.length).toBeLessThanOrEqual(10)
+    expect(ex.length).toBeLessThanOrEqual(12)
     for (const e of ex) {
       if ('options' in e) {
         expect(e.options.length).toBeGreaterThanOrEqual(2)
@@ -23,11 +23,11 @@ test('first stop builds a valid lesson with only А and М known', () => {
   }
 })
 
-test('every stop builds 8–10 exercises with valid options', () => {
+test('every stop builds 8–12 exercises with valid options', () => {
   for (const stop of allStops(content)) {
     const ex = lesson(stop.id)
     expect(ex.length, stop.id).toBeGreaterThanOrEqual(8)
-    expect(ex.length, stop.id).toBeLessThanOrEqual(10)
+    expect(ex.length, stop.id).toBeLessThanOrEqual(12)
     for (const e of ex) if ('options' in e) expect(e.options).toContain(correctAnswer(e))
   }
 })
@@ -91,7 +91,7 @@ test('word exercises at a letter stop use words containing the new letter', () =
     for (let seed = 1; seed <= 10; seed++) {
       for (const e of lesson(stop.id, seed)) {
         if (e.kind !== 'build-word' && e.kind !== 'read-match') continue
-        if (e.kind === 'read-match' && !stop.words.includes(e.word)) continue // review item from earlier
+        if (!stop.words.includes(e.word)) continue // refresher or review word from an earlier stop
         expect(stop.newLetters.some((l) => e.word.includes(l)), `${stop.id}: ${e.word}`).toBe(true)
       }
     }
@@ -122,4 +122,42 @@ test('itemIdFor and isScored map every exercise kind', () => {
     expect(isScored(ex)).toBe(scored)
   }
   expect(correctAnswer(cases.find(([ex]) => ex.kind === 'build-word')![0])).toBe('МА-МА')
+})
+
+// Syllables and words taught at the stops before `stopId`, in journey order.
+function earlier(stopId: string) {
+  const stops = allStops(content)
+  const before = stops.slice(0, stops.findIndex((s) => s.id === stopId))
+  return {
+    syllables: new Set(before.filter((s) => s.kind === 'letter').flatMap((s) => syllablesForStop(content, s.id))),
+    words: new Set(before.flatMap((s) => s.words)),
+  }
+}
+
+const wordOf = (e: Exercise) => (e.kind === 'read-match' || e.kind === 'build-word' ? e.word : null)
+
+test('letter stops after the first end with a refresher of earlier syllables and words', () => {
+  for (const stop of allStops(content).filter((s) => s.kind === 'letter').slice(1)) {
+    const own = new Set(syllablesForStop(content, stop.id))
+    const { syllables, words } = earlier(stop.id)
+    for (let seed = 1; seed <= 10; seed++) {
+      const ex = lesson(stop.id, seed)
+      const oldSyllables = ex.filter((e) => e.kind === 'hear-syllable' && syllables.has(e.syllable) && !own.has(e.syllable))
+      const oldWords = ex.filter((e) => wordOf(e) && words.has(wordOf(e)!) && !stop.words.includes(wordOf(e)!))
+      expect(oldSyllables.length, `${stop.id} seed ${seed}`).toBeGreaterThanOrEqual(1)
+      expect(oldWords.length, `${stop.id} seed ${seed}`).toBeGreaterThanOrEqual(1)
+      const last = ex.at(-1)!
+      const lastIsOld =
+        (last.kind === 'hear-syllable' && syllables.has(last.syllable)) || (wordOf(last) !== null && words.has(wordOf(last)!))
+      expect(lastIsOld, `${stop.id} seed ${seed}: lesson should finish with the refresher`).toBe(true)
+    }
+  }
+})
+
+test('the first stop has no refresher', () => {
+  const own = new Set(syllablesForStop(content, 'r1-s1'))
+  for (const e of lesson('r1-s1')) {
+    if (e.kind === 'hear-syllable') expect(own).toContain(e.syllable)
+    if (wordOf(e) && e.kind === 'build-word') expect(['МАМА']).toContain(wordOf(e))
+  }
 })

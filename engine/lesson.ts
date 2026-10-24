@@ -1,13 +1,15 @@
 import { allStops, type Content } from '../content'
 import { letterOptions, syllableOptions } from './distractors'
-import type { Exercise } from './exercises'
+import { itemIdFor, type Exercise } from './exercises'
 import { findStop, isVowel, knownLettersThrough, syllablesForStop } from './known'
 import type { Progress } from './progress'
 import { pick, shuffle, type Rng } from './rng'
 
 const MIN = 8
-const MAX = 10
+const MAX = 12
 const REVIEW = 2
+const REFRESH_SYLLABLES = 2
+const REFRESH_WORDS = 2
 
 export function buildLesson(c: Content, stopId: string, progress: Progress, rng: Rng): Exercise[] {
   const stop = findStop(c, stopId)
@@ -75,19 +77,66 @@ export function buildLesson(c: Content, stopId: string, progress: Progress, rng:
     }
   }
 
-  const review = reviewExercises(c, progress, known, readMatch, hearSyllable, rng).slice(
-    0,
-    Math.max(0, Math.min(REVIEW, MAX - core.length)),
-  )
-  const lesson = [...core.slice(0, MAX), ...review]
+  const body = core.slice(0, MAX)
+  const taken = new Set(body.map(itemIdFor))
 
-  // Pad with syllable practice from everything learnt so far.
+  // Letter stops finish with a refresher: random syllables and words from earlier stops.
+  const refresher = (
+    stop.kind === 'letter' ? refresherExercises(c, stopId, taken, readMatch, buildWord, hearSyllable, rng) : []
+  ).slice(0, Math.max(0, MAX - body.length))
+  refresher.forEach((e) => taken.add(itemIdFor(e)))
+
+  const review = reviewExercises(c, progress, known, readMatch, hearSyllable, rng)
+    .filter((e) => !taken.has(itemIdFor(e)))
+    .slice(0, Math.max(0, Math.min(REVIEW, MAX - body.length - refresher.length)))
+  const lesson = [...body, ...review]
+
+  // Pad with syllable practice from everything learnt so far, keeping the refresher last.
   const pool = shuffle(rng, syllablesSoFar(c, stopId))
-  for (let i = 0; lesson.length < MIN && pool.length > 0 && i < pool.length * 3; i++) {
+  for (let i = 0; lesson.length + refresher.length < MIN && pool.length > 0 && i < pool.length * 3; i++) {
     const ex = hearSyllable(pool[i % pool.length])
     if (ex) lesson.push(ex)
   }
-  return lesson
+  return [...lesson, ...refresher]
+}
+
+/** Up to REFRESH_SYLLABLES syllables and REFRESH_WORDS words from earlier stops, alternating. */
+function refresherExercises(
+  c: Content,
+  stopId: string,
+  taken: Set<string | null>,
+  readMatch: (w: string) => Exercise,
+  buildWord: (w: string) => Exercise | null,
+  hearSyllable: (s: string) => Exercise | null,
+  rng: Rng,
+): Exercise[] {
+  const stops = allStops(c)
+  const before = stops.slice(0, stops.findIndex((s) => s.id === stopId))
+  const syllables = shuffle(rng, [
+    ...new Set(before.filter((s) => s.kind === 'letter').flatMap((s) => syllablesForStop(c, s.id))),
+  ])
+  const words = shuffle(rng, [...new Set(before.flatMap((s) => s.words))])
+
+  const sylEx: Exercise[] = []
+  for (const s of syllables) {
+    if (sylEx.length === REFRESH_SYLLABLES) break
+    if (taken.has(`syl:${s}`)) continue
+    const ex = hearSyllable(s)
+    if (ex) sylEx.push(ex)
+  }
+  const wordEx: Exercise[] = []
+  for (const w of words) {
+    if (wordEx.length === REFRESH_WORDS) break
+    if (taken.has(`word:${w}`)) continue
+    const ex = c.words.find((x) => x.text === w)?.picture ? readMatch(w) : buildWord(w)
+    if (ex) wordEx.push(ex)
+  }
+  const out: Exercise[] = []
+  for (let i = 0; i < Math.max(sylEx.length, wordEx.length); i++) {
+    if (sylEx[i]) out.push(sylEx[i])
+    if (wordEx[i]) out.push(wordEx[i])
+  }
+  return out
 }
 
 function syllablesSoFar(c: Content, stopId: string): string[] {
