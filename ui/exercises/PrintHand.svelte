@@ -18,7 +18,9 @@
   const toHand = $derived(exercise.direction === 'print-to-hand')
 </script>
 
-<div class="target" class:print={toHand} class:hand={!toHand}>{exercise.letter}</div>
+<div class="target" class:print={toHand} class:hand={!toHand}>
+  {toHand ? exercise.letter : exercise.letter.toLowerCase()}
+</div>
 <OptionGrid
   options={exercise.options}
   correct={exercise.letter}

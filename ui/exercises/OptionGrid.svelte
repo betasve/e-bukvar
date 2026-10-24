@@ -44,6 +44,9 @@
     >
       {#if look === 'picture'}
         <Picture hex={pictureOf(option)} size={88} />
+      {:else if look === 'hand'}
+        <!-- Lobster's capitals are too ornamental to model handwriting; its lowercase is close. -->
+        {option.toLowerCase()}
       {:else}
         {option}
       {/if}
