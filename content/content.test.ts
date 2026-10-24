@@ -65,6 +65,12 @@ describe('content', () => {
     }
   })
 
+  test('every region background image exists in public/regions', () => {
+    const withArt = content.regions.filter((r) => r.art)
+    expect(withArt.map((r) => r.id)).toContain('r1')
+    for (const r of withArt) expect(existsSync(`public/regions/${r.art}`), r.id).toBe(true)
+  })
+
   test('all Plan 1 stops are upper case', () => {
     for (const stop of allStops(content)) expect(stop.case).toBe('upper')
   })

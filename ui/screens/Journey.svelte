@@ -37,7 +37,14 @@
   </div>
 
   {#each content.regions as region (region.id)}
-    <section class="region" style="--region: var(--{region.id})">
+    <section
+      class="region"
+      class:art={region.art}
+      style="--region: var(--{region.id}); {region.art
+        ? `background-image: url(${import.meta.env.BASE_URL}regions/${region.art})`
+        : ''}"
+      data-testid="region-{region.id}"
+    >
       <h2>{region.name}</h2>
       <div class="path" style="height: {region.stops.length * ROW}px">
         <svg viewBox="0 0 100 {region.stops.length * ROW}" preserveAspectRatio="none" aria-hidden="true">
@@ -90,6 +97,12 @@
     padding: 12px 0 4px;
     border-radius: var(--radius);
     background: color-mix(in srgb, var(--region) 18%, var(--bg));
+  }
+  /* Illustrated regions: the art keeps its detail on the edges, so centre-crop it. */
+  .region.art {
+    background-size: cover;
+    background-position: center;
+    min-height: 560px;
   }
   h2 {
     margin: 0 0 4px;

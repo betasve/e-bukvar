@@ -12,7 +12,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       workbox: {
         // Everything, including all audio clips, so lessons work offline after the first visit.
-        globPatterns: ['**/*.{js,css,html,svg,png,mp3,json,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,webp,mp3,json,woff2}'],
         maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
         clientsClaim: true,
         skipWaiting: true,

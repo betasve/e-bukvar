@@ -22,6 +22,7 @@ export const regions: Region[] = [
   {
     id: 'r1',
     name: 'Поляна',
+    art: 'meadow.webp',
     stops: [
       letterStop('r1', 'r1-s1', ['А', 'М'], ['МАМА']),
       letterStop('r1', 'r1-s2', ['О'], ['МАМА']),

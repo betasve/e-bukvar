@@ -29,6 +29,7 @@ export interface Region {
   id: string
   name: string
   stops: Stop[]
+  art?: string // background image file in public/regions/
 }
 
 export interface StickerDef {
