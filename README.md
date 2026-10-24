@@ -34,7 +34,7 @@ The voice is set in `tools/audio-config.ts`.
 
 What she learns lives in `content/`: letters, regions and stops in journey order, words with syllable splits and pictures, stickers, and spoken phrases. `npm test` checks the content (each stop only uses letters already taught, every word has a picture, and so on).
 
-Pictures are [OpenMoji](https://openmoji.org) – CC BY-SA 4.0.
+Pictures are [OpenMoji](https://openmoji.org) – CC BY-SA 4.0. The brief for journey-map illustrations is in `docs/art-brief.md`.
 
 ## Deploy
 
