@@ -5,6 +5,7 @@
 - **Font:** Lobster by Pablo Impallari, SIL Open Font License 1.1. Bundled offline via `@fontsource/lobster`; used as `--font-hand` in `ui/theme.css`.
 - **Why:** the user found it on nachalen-uchitel.blogspot.com and preferred it over Bad Script, Marck Script, Caveat, Comforter and Great Vibes. It is bold and easy to read at large sizes.
 - **Bulgarian forms:** the font has a Bulgarian `locl` feature (Ф, ж, к, ю), applied automatically because the page is `lang="bg"`. Other letters use the default Cyrillic shapes.
+- **Lowercase only (2026-10-24):** Lobster's capitals are too ornamental to model handwriting, so handwritten letters are always shown in lowercase (print М ↔ handwritten м), even while printed letters are capitals-only. This overrides the spec's "capitals only in regions 1–3" for the handwritten side.
 - **Caveat:** a display script, heavier and more slanted than first-grade ръкописни letters. Revisit (or draw SVG letters) if her school's shapes differ too much once lowercase arrives in Plan 2.
 
 ## Audio source — Edge read-aloud voices via msedge-tts (2026-10-23)
