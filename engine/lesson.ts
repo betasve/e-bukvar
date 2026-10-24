@@ -18,9 +18,18 @@ export function buildLesson(c: Content, stopId: string, progress: Progress, rng:
     const options = syllableOptions(rng, s, known, 3)
     return options.length < 2 ? null : { kind: 'hear-syllable', syllable: s, options }
   }
+  const pictureOf = (text: string) => c.words.find((w) => w.text === text)?.picture
+  // Distractors need pictures that differ from the answer and from each other (МАМА and МАМО share one).
   const readMatch = (word: string): Exercise => {
-    const others = c.words.filter((w) => w.picture && w.text !== word).map((w) => w.text)
-    return { kind: 'read-match', word, options: shuffle(rng, [word, ...shuffle(rng, others).slice(0, 2)]) }
+    const seen = new Set([pictureOf(word)])
+    const others: string[] = []
+    for (const w of shuffle(rng, c.words)) {
+      if (!w.picture || seen.has(w.picture)) continue
+      seen.add(w.picture)
+      others.push(w.text)
+      if (others.length === 2) break
+    }
+    return { kind: 'read-match', word, options: shuffle(rng, [word, ...others]) }
   }
   const buildWord = (word: string): Exercise | null => {
     const w = c.words.find((x) => x.text === word)!
@@ -28,7 +37,7 @@ export function buildLesson(c: Content, stopId: string, progress: Progress, rng:
       ? null
       : { kind: 'build-word', word, syllables: w.syllables, tiles: shuffle(rng, w.syllables) }
   }
-  const pictured = stop.words.filter((w) => c.words.find((x) => x.text === w)?.picture)
+  const pictured = stop.words.filter((w) => pictureOf(w))
 
   if (stop.kind === 'letter') {
     for (const letter of stop.newLetters) {
@@ -49,17 +58,20 @@ export function buildLesson(c: Content, stopId: string, progress: Progress, rng:
       const ex = hearSyllable(s)
       if (ex) core.push(ex)
     }
-    const word = pictured.length ? pick(rng, pictured) : null
-    if (word) {
-      const bw = buildWord(word)
-      if (bw) core.push(bw)
-      core.push(readMatch(pick(rng, pictured)))
-    }
+    // Any stop word can be built (pictures optional); read-match needs a picture.
+    // Use two different words when the stop has them.
+    const built = stop.words.length ? pick(rng, stop.words) : null
+    const bw = built ? buildWord(built) : null
+    if (bw) core.push(bw)
+    const readable = pictured.filter((w) => w !== built)
+    const toRead = readable.length ? readable : pictured
+    if (toRead.length) core.push(readMatch(pick(rng, toRead)))
   } else {
-    for (const word of pictured) {
-      core.push(readMatch(word))
+    // Story stop: read every pictured word, then build words while there is room.
+    for (const word of pictured) core.push(readMatch(word))
+    for (const word of stop.words) {
       const bw = buildWord(word)
-      if (bw) core.push(bw)
+      if (bw && core.length < MAX) core.push(bw)
     }
   }
 

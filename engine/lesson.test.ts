@@ -73,10 +73,39 @@ test('review includes a box-1 item from an earlier stop', () => {
   expect(ex.some((e) => e.kind === 'hear-syllable' && e.syllable === 'МА')).toBe(true)
 })
 
+test('read-match options never show the same picture twice', () => {
+  for (const stop of allStops(content)) {
+    for (let seed = 1; seed <= 20; seed++) {
+      for (const e of lesson(stop.id, seed)) {
+        if (e.kind !== 'read-match') continue
+        const pictures = e.options.map((o) => content.words.find((w) => w.text === o)?.picture)
+        expect(pictures.every(Boolean), `${stop.id}: ${e.options}`).toBe(true)
+        expect(new Set(pictures).size, `${stop.id}: ${e.options}`).toBe(pictures.length)
+      }
+    }
+  }
+})
+
+test('word exercises at a letter stop use words containing the new letter', () => {
+  for (const stop of allStops(content).filter((s) => s.kind === 'letter')) {
+    for (let seed = 1; seed <= 10; seed++) {
+      for (const e of lesson(stop.id, seed)) {
+        if (e.kind !== 'build-word' && e.kind !== 'read-match') continue
+        if (e.kind === 'read-match' && !stop.words.includes(e.word)) continue // review item from earlier
+        expect(stop.newLetters.some((l) => e.word.includes(l)), `${stop.id}: ${e.word}`).toBe(true)
+      }
+    }
+  }
+})
+
 test('story stop contains read-match for each pictured word', () => {
-  const ex = lesson('r2-story')
-  const matched = ex.filter((e) => e.kind === 'read-match').map((e) => (e as { word: string }).word)
-  expect(new Set(matched)).toEqual(new Set(['МАМА', 'ЛАМА', 'ЛУНА', 'ЛАЛЕ', 'ЛИМОН']))
+  for (const stop of allStops(content).filter((s) => s.kind === 'story')) {
+    const pictured = stop.words.filter((w) => content.words.find((x) => x.text === w)?.picture)
+    const matched = lesson(stop.id)
+      .filter((e) => e.kind === 'read-match')
+      .map((e) => (e as { word: string }).word)
+    for (const w of pictured) expect(matched, `${stop.id}: ${w}`).toContain(w)
+  }
 })
 
 test('itemIdFor and isScored map every exercise kind', () => {

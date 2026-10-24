@@ -25,9 +25,9 @@ export const regions: Region[] = [
     art: 'meadow.webp',
     stops: [
       letterStop('r1', 'r1-s1', ['А', 'М'], ['МАМА']),
-      letterStop('r1', 'r1-s2', ['О'], ['МАМА']),
-      letterStop('r1', 'r1-s3', ['У'], ['МАМА']),
-      storyStop('r1', 'r1-story', ['МАМА']),
+      letterStop('r1', 'r1-s2', ['О'], ['МАМО', 'МОМА']),
+      letterStop('r1', 'r1-s3', ['У'], ['УМА']),
+      storyStop('r1', 'r1-story', ['МАМА', 'МАМО', 'МОМА']),
     ],
   },
   {
@@ -36,10 +36,10 @@ export const regions: Region[] = [
     art: 'forest.webp',
     stops: [
       letterStop('r2', 'r2-s1', ['Л'], ['ЛАМА']),
-      letterStop('r2', 'r2-s2', ['Н'], ['ЛУНА', 'ЛАМА']),
-      letterStop('r2', 'r2-s3', ['Е'], ['ЛАЛЕ', 'ЛУНА']),
-      letterStop('r2', 'r2-s4', ['И'], ['ЛИМОН', 'ЛАЛЕ']),
-      storyStop('r2', 'r2-story', ['МАМА', 'ЛАМА', 'ЛУНА', 'ЛАЛЕ', 'ЛИМОН']),
+      letterStop('r2', 'r2-s2', ['Н'], ['ЛУНА']),
+      letterStop('r2', 'r2-s3', ['Е'], ['ЛАЛЕ', 'ЕЛА', 'ЕЛЕН']),
+      letterStop('r2', 'r2-s4', ['И'], ['ЛИМОН']),
+      storyStop('r2', 'r2-story', ['ЛАМА', 'ЛУНА', 'ЕЛА', 'ЕЛЕН', 'ЛИМОН']),
     ],
   },
 ]

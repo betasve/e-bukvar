@@ -35,10 +35,19 @@ describe('content', () => {
     }
   })
 
-  test('words in letter stops have a picture', () => {
+  test('every word in a letter stop contains one of its new letters', () => {
     for (const stop of allStops(content).filter((s) => s.kind === 'letter')) {
-      for (const w of stop.words) expect(wordByText.get(w)?.picture, w).toBeTruthy()
+      for (const w of stop.words) {
+        expect(stop.newLetters.some((l) => w.includes(l)), `${stop.id}: ${w}`).toBe(true)
+      }
     }
+  })
+
+  test('no two words share a picture unless they are forms of the same word', () => {
+    // МАМА and МАМО share the woman picture; read-match must never offer both at once (see lesson tests).
+    const byPicture = new Map<string, string[]>()
+    for (const w of content.words) if (w.picture) byPicture.set(w.picture, [...(byPicture.get(w.picture) ?? []), w.text])
+    for (const [, texts] of byPicture) if (texts.length > 1) expect(texts.sort()).toEqual(['МАМА', 'МАМО'])
   })
 
   test('every picture exists in openmoji', () => {

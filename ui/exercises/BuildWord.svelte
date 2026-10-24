@@ -33,7 +33,7 @@
   }
 </script>
 
-<Picture hex={picture} size={110} />
+{#if picture}<Picture hex={picture} size={110} />{/if}
 <div class="slots" class:shake={shaking} class:solved>
   {#each exercise.tiles as _, slot (slot)}
     <div class="slot print">{placed[slot] !== undefined ? exercise.tiles[placed[slot]] : ''}</div>

@@ -24,5 +24,5 @@ test('syllablesForStop r1-s2 contains МО and ОМ but not МА', () => {
 })
 
 test('syllablesForStop for a story stop is the syllables of its words', () => {
-  expect(new Set(syllablesForStop(content, 'r1-story'))).toEqual(new Set(['МА']))
+  expect(new Set(syllablesForStop(content, 'r1-story'))).toEqual(new Set(['МА', 'МО']))
 })
