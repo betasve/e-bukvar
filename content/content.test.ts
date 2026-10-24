@@ -67,7 +67,7 @@ describe('content', () => {
 
   test('every region background image exists in public/regions', () => {
     const withArt = content.regions.filter((r) => r.art)
-    expect(withArt.map((r) => r.id)).toContain('r1')
+    expect(withArt.map((r) => r.id)).toEqual(expect.arrayContaining(['r1', 'r2']))
     for (const r of withArt) expect(existsSync(`public/regions/${r.art}`), r.id).toBe(true)
   })
 

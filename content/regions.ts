@@ -33,6 +33,7 @@ export const regions: Region[] = [
   {
     id: 'r2',
     name: 'Гора',
+    art: 'forest.webp',
     stops: [
       letterStop('r2', 'r2-s1', ['Л'], ['ЛАМА']),
       letterStop('r2', 'r2-s2', ['Н'], ['ЛУНА', 'ЛАМА']),
