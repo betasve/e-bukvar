@@ -42,7 +42,6 @@ export type PhraseId =
   | 'find-letter'
   | 'match-hand'
   | 'watch-blend'
-  | 'drag-blend'
   | 'find-syllable'
   | 'build-word'
   | 'read-word'

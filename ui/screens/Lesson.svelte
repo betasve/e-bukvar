@@ -10,7 +10,6 @@
   import Meter from '../components/Meter.svelte'
   import Picture from '../components/Picture.svelte'
   import StickerPopup from '../components/StickerPopup.svelte'
-  import Blend from '../exercises/Blend.svelte'
   import BuildWord from '../exercises/BuildWord.svelte'
   import HearLetter from '../exercises/HearLetter.svelte'
   import HearSyllable from '../exercises/HearSyllable.svelte'
@@ -180,8 +179,6 @@
           <PrintHand exercise={current} {solved} {reveal} onanswer={answer} />
         {:else if current.kind === 'watch-blend'}
           <WatchBlend exercise={current} {player} ondone={advance} />
-        {:else if current.kind === 'blend'}
-          <Blend exercise={current} {player} ondone={advance} />
         {:else if current.kind === 'hear-syllable'}
           <HearSyllable exercise={current} {solved} {reveal} onanswer={answer} />
         {:else if current.kind === 'build-word'}

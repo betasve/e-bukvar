@@ -44,7 +44,7 @@ export function buildLesson(c: Content, stopId: string, progress: Progress, rng:
     // Prefer consonant+vowel for the blending demo: it is the shape she reads most.
     const cv = syllables.filter((s) => isVowel(c, s[1]))
     const demo = pick(rng, cv.length ? cv : syllables)
-    core.push({ kind: 'watch-blend', syllable: demo }, { kind: 'blend', syllable: demo })
+    core.push({ kind: 'watch-blend', syllable: demo })
     for (const s of shuffle(rng, syllables).slice(0, 2)) {
       const ex = hearSyllable(s)
       if (ex) core.push(ex)

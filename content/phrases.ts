@@ -5,7 +5,6 @@ export const phrases: Phrase[] = [
   { id: 'find-letter', text: 'Коя е буквата?' },
   { id: 'match-hand', text: 'Коя буква е същата?' },
   { id: 'watch-blend', text: 'Слушай как буквите се събират' },
-  { id: 'drag-blend', text: 'Събери буквите' },
   { id: 'find-syllable', text: 'Коя е сричката?' },
   { id: 'build-word', text: 'Подреди думата' },
   { id: 'read-word', text: 'Какво пише тук? Коя е картинката?' },

@@ -9,9 +9,6 @@ async function solveOne(page: Page) {
   const index = (await ex.getAttribute('data-index'))!
   if (kind === 'watch-blend') {
     await page.getByTestId('next').click()
-  } else if (kind === 'blend') {
-    await page.getByTestId('blend-first').click()
-    await page.getByTestId('blend-second').click()
   } else if (kind === 'build-word') {
     for (const s of answer.split('-')) await page.locator(`[data-tile="${s}"]:not([disabled])`).first().click()
   } else {
@@ -89,7 +86,7 @@ test('all options are within the viewport', async ({ page }) => {
   await openStop(page, 'r1-s1')
   const viewport = page.viewportSize()!
   while (!(await page.getByTestId('lesson-done').isVisible())) {
-    for (const el of await page.locator('[data-option], [data-tile], [data-testid^="blend-"]').all()) {
+    for (const el of await page.locator('[data-option], [data-tile]').all()) {
       const box = (await el.boundingBox())!
       expect(box.x).toBeGreaterThanOrEqual(0)
       expect(box.y).toBeGreaterThanOrEqual(0)

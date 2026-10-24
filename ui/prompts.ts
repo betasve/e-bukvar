@@ -24,8 +24,6 @@ export function promptSteps(ex: Exercise): Step[] {
         { clip: clipKey.syllable(ex.syllable) },
       ]
     }
-    case 'blend':
-      return [say('drag-blend')]
     case 'hear-syllable':
       return [say('find-syllable'), { pause: 300 }, { clip: clipKey.syllable(ex.syllable) }]
     case 'build-word':
@@ -40,7 +38,6 @@ export function lessonClips(exercises: Exercise[]): string[] {
   const keys = new Set<string>([clipKey.phrase('bravo'), clipKey.phrase('try-again'), clipKey.phrase('sticker')])
   for (const ex of exercises) {
     for (const step of promptSteps(ex)) if ('clip' in step) keys.add(step.clip)
-    if (ex.kind === 'blend') keys.add(clipKey.syllable(ex.syllable))
     if (ex.kind === 'read-match') keys.add(clipKey.word(ex.word))
   }
   return [...keys]

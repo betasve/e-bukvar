@@ -5,13 +5,12 @@ export type Exercise =
   | { kind: 'hear-letter'; letter: LetterId; options: LetterId[] }
   | { kind: 'print-hand'; letter: LetterId; direction: 'print-to-hand' | 'hand-to-print'; options: LetterId[] }
   | { kind: 'watch-blend'; syllable: string }
-  | { kind: 'blend'; syllable: string }
   | { kind: 'hear-syllable'; syllable: string; options: string[] }
   | { kind: 'build-word'; word: string; syllables: string[]; tiles: string[] } // tiles = shuffled syllables
   | { kind: 'read-match'; word: string; options: string[] } // words, shown as pictures
 
 export function isScored(ex: Exercise): boolean {
-  return ex.kind !== 'watch-blend' && ex.kind !== 'blend'
+  return ex.kind !== 'watch-blend'
 }
 
 export function itemIdFor(ex: Exercise): ItemId | null {
@@ -20,7 +19,6 @@ export function itemIdFor(ex: Exercise): ItemId | null {
       return `sound:${ex.letter}`
     case 'print-hand':
       return `hand:${ex.letter}`
-    case 'blend':
     case 'hear-syllable':
       return `syl:${ex.syllable}`
     case 'build-word':
@@ -37,7 +35,6 @@ export function correctAnswer(ex: Exercise): string {
     case 'print-hand':
       return ex.letter
     case 'watch-blend':
-    case 'blend':
     case 'hear-syllable':
       return ex.syllable
     case 'build-word':

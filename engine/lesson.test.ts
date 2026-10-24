@@ -39,12 +39,11 @@ test('lesson starts with hear-letter for each new letter', () => {
   expect(firstLetters.map((e) => (e as { letter: string }).letter)).toEqual(['А', 'М'])
 })
 
-test('watch-blend is immediately followed by blend on the same syllable', () => {
+test('letter stops show one blending demo and no drag-to-blend step', () => {
   for (const stop of allStops(content).filter((s) => s.kind === 'letter')) {
-    const ex = lesson(stop.id)
-    const i = ex.findIndex((e) => e.kind === 'watch-blend')
-    expect(i, stop.id).toBeGreaterThanOrEqual(0)
-    expect(ex[i + 1]).toEqual({ kind: 'blend', syllable: (ex[i] as { syllable: string }).syllable })
+    const kinds: string[] = lesson(stop.id).map((e) => e.kind)
+    expect(kinds.filter((k) => k === 'watch-blend'), stop.id).toHaveLength(1)
+    expect(kinds, stop.id).not.toContain('blend')
   }
 })
 
@@ -85,7 +84,6 @@ test('itemIdFor and isScored map every exercise kind', () => {
     [{ kind: 'hear-letter', letter: 'М', options: ['М'] }, 'sound:М', true],
     [{ kind: 'print-hand', letter: 'М', direction: 'print-to-hand', options: ['М'] }, 'hand:М', true],
     [{ kind: 'watch-blend', syllable: 'МА' }, null, false],
-    [{ kind: 'blend', syllable: 'МА' }, 'syl:МА', false],
     [{ kind: 'hear-syllable', syllable: 'МА', options: ['МА'] }, 'syl:МА', true],
     [{ kind: 'build-word', word: 'МАМА', syllables: ['МА', 'МА'], tiles: ['МА', 'МА'] }, 'word:МАМА', true],
     [{ kind: 'read-match', word: 'МАМА', options: ['МАМА'] }, 'word:МАМА', true],
@@ -94,5 +92,5 @@ test('itemIdFor and isScored map every exercise kind', () => {
     expect(itemIdFor(ex)).toBe(id)
     expect(isScored(ex)).toBe(scored)
   }
-  expect(correctAnswer(cases[5][0])).toBe('МА-МА')
+  expect(correctAnswer(cases.find(([ex]) => ex.kind === 'build-word')![0])).toBe('МА-МА')
 })

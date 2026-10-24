@@ -26,13 +26,13 @@ test('read-match prompt does not say the word', () => {
   expect(promptSteps({ kind: 'read-match', word: 'ЛУНА', options: [] })).toEqual([{ clip: 'say:read-word' }])
 })
 
-test('lessonClips covers prompts, feedback phrases, blend result and read-match word', () => {
+test('lessonClips covers prompts, feedback phrases, blend demo and read-match word', () => {
   const exercises: Exercise[] = [
-    { kind: 'blend', syllable: 'МА' },
+    { kind: 'watch-blend', syllable: 'МА' },
     { kind: 'read-match', word: 'ЛУНА', options: ['ЛУНА'] },
   ]
   const clips = lessonClips(exercises)
-  for (const key of ['say:drag-blend', 'syl:МА', 'say:read-word', 'word:ЛУНА', 'say:bravo', 'say:try-again', 'say:sticker']) {
+  for (const key of ['say:watch-blend', 'letter:М', 'letter:А', 'syl:МА', 'say:read-word', 'word:ЛУНА', 'say:bravo', 'say:try-again', 'say:sticker']) {
     expect(clips).toContain(key)
   }
   expect(new Set(clips).size).toBe(clips.length)
