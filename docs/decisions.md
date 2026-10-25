@@ -4,14 +4,14 @@
 
 - **Source:** the user supplied all 30 capital and 30 lowercase ръкописни letters traced from a primer sheet (`~/bukvar-letters/letters2/`: `upper/`, `lower/`, `metrics.json`). They replace Lobster.
 - **Import:** `npm run hand-letters -- <dir>` writes `public/hand/<codepoint>.svg` (committed). Every letter is re-framed to one common height and baseline using the sheet metrics, so а sits at x-height while б and д reach up and down, and one `height` gives every letter the same scale.
-- **Still lowercase only:** the handwritten side keeps showing lowercase (print М ↔ handwritten м), as decided below. The capitals are imported too, so switching to capitals is a one-line change in `OptionGrid.svelte` and `PrintHand.svelte`.
+- **Same case as print (2026-10-25):** the handwritten letter now matches the printed one (print М ↔ handwritten М), at the user's request. This ends the Lobster-era "lowercase only" rule below and follows the spec's capitals-first order again. A capital too wide for a phone's answer button shrinks to fit.
 
 ## Handwriting font — Lobster (2026-10-23, replaced 2026-10-25)
 
 - **Font:** Lobster by Pablo Impallari, SIL Open Font License 1.1. Bundled offline via `@fontsource/lobster`; used as `--font-hand` in `ui/theme.css`.
 - **Why:** the user found it on nachalen-uchitel.blogspot.com and preferred it over Bad Script, Marck Script, Caveat, Comforter and Great Vibes. It is bold and easy to read at large sizes.
 - **Bulgarian forms:** the font has a Bulgarian `locl` feature (Ф, ж, к, ю), applied automatically because the page is `lang="bg"`. Other letters use the default Cyrillic shapes.
-- **Lowercase only (2026-10-24):** Lobster's capitals are too ornamental to model handwriting, so handwritten letters are always shown in lowercase (print М ↔ handwritten м), even while printed letters are capitals-only. This overrides the spec's "capitals only in regions 1–3" for the handwritten side.
+- **Lowercase only (2026-10-24, ended 2026-10-25):** Lobster's capitals are too ornamental to model handwriting, so handwritten letters are always shown in lowercase (print М ↔ handwritten м), even while printed letters are capitals-only. This overrides the spec's "capitals only in regions 1–3" for the handwritten side.
 - **Caveat:** a display script, heavier and more slanted than first-grade ръкописни letters. Revisit (or draw SVG letters) if her school's shapes differ too much once lowercase arrives in Plan 2.
 
 ## Audio source — Edge read-aloud voices via msedge-tts (2026-10-23)

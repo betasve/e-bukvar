@@ -46,8 +46,7 @@
       {#if look === 'picture'}
         <Picture hex={pictureOf(option)} size={88} />
       {:else if look === 'hand'}
-        <!-- Handwritten letters stay lowercase while printed ones are capitals (docs/decisions.md). -->
-        <HandLetter letter={option.toLowerCase()} height={124} />
+        <HandLetter letter={option} height={124} />
       {:else}
         {option}
       {/if}

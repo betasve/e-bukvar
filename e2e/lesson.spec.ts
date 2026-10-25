@@ -63,16 +63,19 @@ test('wrong answer twice reveals the correct option', async ({ page }) => {
   await expect(page.locator(`[data-option="${answer}"]`)).toHaveClass(/reveal/)
 })
 
-test('handwritten letters are primer images, shown in lowercase', async ({ page }) => {
+test('handwritten letters are primer images in the same case as the printed letter', async ({ page }) => {
   test.setTimeout(FULL_LESSON_MS)
   await startWithNewProfile(page)
-  await openStop(page, 'r1-s1')
+  await openStop(page, 'r1-s1') // a capitals stop
   let checked = 0
   while (!(await page.getByTestId('lesson-done').isVisible())) {
     if ((await page.getByTestId('exercise').getAttribute('data-kind')) === 'print-hand') {
       for (const img of await page.locator('img.hand').all()) {
         const letter = (await img.getAttribute('alt'))!
-        expect(letter).toBe(letter.toLowerCase())
+        expect(letter).toBe(letter.toUpperCase())
+        const box = (await img.boundingBox())!
+        const button = await img.evaluate((el) => el.closest('button')?.getBoundingClientRect().width ?? Infinity)
+        expect(box.width, `${letter} fits its button`).toBeLessThanOrEqual(button)
         expect(await img.getAttribute('src')).toMatch(/hand\/[0-9A-F]{4}\.svg$/)
         expect(await img.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0)
         checked++

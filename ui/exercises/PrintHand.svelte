@@ -20,7 +20,7 @@
 </script>
 
 <div class="target" class:print={toHand}>
-  {#if toHand}{exercise.letter}{:else}<HandLetter letter={exercise.letter.toLowerCase()} height={200} />{/if}
+  {#if toHand}{exercise.letter}{:else}<HandLetter letter={exercise.letter} height={200} />{/if}
 </div>
 <OptionGrid
   options={exercise.options}
