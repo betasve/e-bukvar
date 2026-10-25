@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Exercise } from '../../engine/exercises'
   import type { AnswerResult } from '../lesson/session'
+  import HandLetter from '../components/HandLetter.svelte'
   import OptionGrid from './OptionGrid.svelte'
 
   let {
@@ -18,8 +19,8 @@
   const toHand = $derived(exercise.direction === 'print-to-hand')
 </script>
 
-<div class="target" class:print={toHand} class:hand={!toHand}>
-  {toHand ? exercise.letter : exercise.letter.toLowerCase()}
+<div class="target" class:print={toHand}>
+  {#if toHand}{exercise.letter}{:else}<HandLetter letter={exercise.letter.toLowerCase()} height={200} />{/if}
 </div>
 <OptionGrid
   options={exercise.options}
@@ -35,5 +36,7 @@
     font-size: 96px;
     line-height: 1.1;
     min-height: 110px;
+    display: grid;
+    place-items: center;
   }
 </style>

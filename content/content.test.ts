@@ -1,5 +1,6 @@
 import { existsSync } from 'node:fs'
 import { describe, expect, test } from 'vitest'
+import { handFileName } from '../ui/hand'
 import { allStops, content } from './index'
 
 const openmoji = (hex: string) => existsSync(`node_modules/openmoji/color/svg/${hex}.svg`)
@@ -78,6 +79,14 @@ describe('content', () => {
     const withArt = content.regions.filter((r) => r.art)
     expect(withArt.map((r) => r.id)).toEqual(expect.arrayContaining(['r1', 'r2']))
     for (const r of withArt) expect(existsSync(`public/regions/${r.art}`), r.id).toBe(true)
+  })
+
+  test('every taught letter has a handwritten capital and lowercase in public/hand', () => {
+    for (const l of allStops(content).flatMap((s) => s.newLetters)) {
+      for (const form of [l.toUpperCase(), l.toLowerCase()]) {
+        expect(existsSync(`public/hand/${handFileName(form)}`), form).toBe(true)
+      }
+    }
   })
 
   test('all Plan 1 stops are upper case', () => {

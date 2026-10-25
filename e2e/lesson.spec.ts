@@ -63,15 +63,18 @@ test('wrong answer twice reveals the correct option', async ({ page }) => {
   await expect(page.locator(`[data-option="${answer}"]`)).toHaveClass(/reveal/)
 })
 
-test('handwritten letters are shown in lowercase', async ({ page }) => {
+test('handwritten letters are primer images, shown in lowercase', async ({ page }) => {
   test.setTimeout(FULL_LESSON_MS)
   await startWithNewProfile(page)
   await openStop(page, 'r1-s1')
   let checked = 0
   while (!(await page.getByTestId('lesson-done').isVisible())) {
     if ((await page.getByTestId('exercise').getAttribute('data-kind')) === 'print-hand') {
-      for (const text of await page.locator('.hand').allTextContents()) {
-        expect(text.trim()).toBe(text.trim().toLowerCase())
+      for (const img of await page.locator('img.hand').all()) {
+        const letter = (await img.getAttribute('alt'))!
+        expect(letter).toBe(letter.toLowerCase())
+        expect(await img.getAttribute('src')).toMatch(/hand\/[0-9A-F]{4}\.svg$/)
+        expect(await img.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0)
         checked++
       }
     }

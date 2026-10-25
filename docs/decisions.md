@@ -1,6 +1,12 @@
 # Decisions
 
-## Handwriting font — Lobster (2026-10-23)
+## Handwritten letters — primer-traced SVGs (2026-10-25)
+
+- **Source:** the user supplied all 30 capital and 30 lowercase ръкописни letters traced from a primer sheet (`~/bukvar-letters/letters2/`: `upper/`, `lower/`, `metrics.json`). They replace Lobster.
+- **Import:** `npm run hand-letters -- <dir>` writes `public/hand/<codepoint>.svg` (committed). Every letter is re-framed to one common height and baseline using the sheet metrics, so а sits at x-height while б and д reach up and down, and one `height` gives every letter the same scale.
+- **Still lowercase only:** the handwritten side keeps showing lowercase (print М ↔ handwritten м), as decided below. The capitals are imported too, so switching to capitals is a one-line change in `OptionGrid.svelte` and `PrintHand.svelte`.
+
+## Handwriting font — Lobster (2026-10-23, replaced 2026-10-25)
 
 - **Font:** Lobster by Pablo Impallari, SIL Open Font License 1.1. Bundled offline via `@fontsource/lobster`; used as `--font-hand` in `ui/theme.css`.
 - **Why:** the user found it on nachalen-uchitel.blogspot.com and preferred it over Bad Script, Marck Script, Caveat, Comforter and Great Vibes. It is bold and easy to read at large sizes.

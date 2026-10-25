@@ -1,7 +1,6 @@
 <script lang="ts">
   import '@fontsource/nunito/700.css'
   import '@fontsource/nunito/800.css'
-  import '@fontsource/lobster/400.css'
   import './theme.css'
   import { onMount } from 'svelte'
   import { AudioPlayer } from '../audio/player'

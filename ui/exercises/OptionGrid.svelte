@@ -1,5 +1,6 @@
 <script lang="ts">
   import { content } from '../../content'
+  import HandLetter from '../components/HandLetter.svelte'
   import Picture from '../components/Picture.svelte'
   import type { AnswerResult } from '../lesson/session'
 
@@ -45,8 +46,8 @@
       {#if look === 'picture'}
         <Picture hex={pictureOf(option)} size={88} />
       {:else if look === 'hand'}
-        <!-- Lobster's capitals are too ornamental to model handwriting; its lowercase is close. -->
-        {option.toLowerCase()}
+        <!-- Handwritten letters stay lowercase while printed ones are capitals (docs/decisions.md). -->
+        <HandLetter letter={option.toLowerCase()} height={124} />
       {:else}
         {option}
       {/if}
@@ -81,11 +82,6 @@
   .print {
     font-family: var(--font-print);
     font-weight: 800;
-  }
-  .hand {
-    font-family: var(--font-hand);
-    font-weight: 400;
-    font-size: 60px;
   }
   .right {
     background: var(--ok);
