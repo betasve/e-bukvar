@@ -2,8 +2,8 @@ import type { Word } from './types'
 
 // Words without a picture can only be used for "build the word", never for "read and match".
 export const words: Word[] = [
-  { text: 'МАМА', syllables: ['МА', 'МА'], picture: '1F469' },
-  { text: 'МАМО', syllables: ['МА', 'МО'], picture: '1F469' },
+  { text: 'МАМА', syllables: ['МА', 'МА'], picture: '1F469-200D-1F37C' },
+  { text: 'МАМО', syllables: ['МА', 'МО'], picture: '1F469-200D-1F37C' },
   { text: 'МОМА', syllables: ['МО', 'МА'], picture: '1F467' },
   { text: 'УМА', syllables: ['У', 'МА'] },
   { text: 'ЛАМА', syllables: ['ЛА', 'МА'], picture: '1F999' },
