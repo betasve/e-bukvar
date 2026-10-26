@@ -19,6 +19,7 @@
   "syl:АЛ": "4b460a367a1c2862.mp3",
   "syl:АМ": "c0356a137aa83ac7.mp3",
   "syl:АН": "8b97e21ebdbf92bc.mp3",
+  "syl:Е": "e3d7e0b14ed2d9db.mp3",
   "syl:ЕЛ": "c5d640f628511717.mp3",
   "syl:ЕМ": "31ffb4b2def47242.mp3",
   "syl:ЕН": "14a67e2c6a851481.mp3",
@@ -27,6 +28,7 @@
   "syl:ИН": "24a8cdc53a5eb71b.mp3",
   "syl:ЛА": "fcaddb9156905d39.mp3",
   "syl:ЛЕ": "d042abf7a8d20884.mp3",
+  "syl:ЛЕН": "f257c071b2819d0b.mp3",
   "syl:ЛИ": "508dec88fbec1d93.mp3",
   "syl:ЛО": "2d0d61610fe0fcf2.mp3",
   "syl:ЛУ": "f04f87c67a676d0b.mp3",
@@ -47,9 +49,14 @@
   "syl:УЛ": "cafe3e5c570bc430.mp3",
   "syl:УМ": "fa67e966d9da69b1.mp3",
   "syl:УН": "655cf9ac936f00ff.mp3",
+  "word:ЕЛА": "9032fa9c080188e1.mp3",
+  "word:ЕЛЕН": "fce573d124c00300.mp3",
   "word:ЛАЛЕ": "1e881086db792c28.mp3",
   "word:ЛАМА": "ec2c352d54f8598d.mp3",
   "word:ЛИМОН": "d170e73e981c829a.mp3",
   "word:ЛУНА": "c152f2209dd6934c.mp3",
-  "word:МАМА": "f30f2cc69ade4857.mp3"
+  "word:МАМА": "f30f2cc69ade4857.mp3",
+  "word:МАМО": "7567163dfe560d8d.mp3",
+  "word:МОМА": "394afbe8a0db8c03.mp3",
+  "word:УМА": "78426802ac20a546.mp3"
 }
