@@ -13,11 +13,11 @@ export const words: Word[] = [
   { text: 'ЕЛЕН', syllables: ['Е', 'ЛЕН'], picture: '1F98C' },
   { text: 'ЛИМОН', syllables: ['ЛИ', 'МОН'], picture: '1F34B' },
   { text: 'МОРЕ', syllables: ['МО', 'РЕ'], picture: '1F30A' },
-  { text: 'РАМО', syllables: ['РА', 'МО'] },
+  { text: 'РАМО', syllables: ['РА', 'МО'], picture: '1F4AA' },
   { text: 'ЛИСА', syllables: ['ЛИ', 'СА'], picture: '1F98A' },
   { text: 'СЛОН', syllables: ['СЛОН'], picture: '1F418' },
   { text: 'ТОРТА', syllables: ['ТОР', 'ТА'], picture: '1F382' },
   { text: 'СТОЛ', syllables: ['СТОЛ'], picture: '1FA91' },
-  { text: 'ОСЪЛ', syllables: ['О', 'СЪЛ'], picture: '1FACF' },
   { text: 'СЪН', syllables: ['СЪН'], picture: '1F634' },
+  { text: 'ТРЪН', syllables: ['ТРЪН'], picture: '1F335' },
 ]
