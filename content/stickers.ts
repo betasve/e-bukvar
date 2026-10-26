@@ -23,4 +23,12 @@ export const stickers: StickerDef[] = [
      '1F43A', '1F417', '1F9A1', '1F99D', '1F330', '1F341', '1F985', '1F343'],
     '1F333',
   ),
+  // Река: water animals and boats
+  ...pool(
+    'r3',
+    // prettier-ignore
+    ['1F986', '1F438', '1F41F', '1F420', '1F421', '1F422', '1F980', '1F990',
+     '1F9A6', '1F9AB', '1F9A2', '1FAB7', '1F41A', '26F5', '1F3A3', '1F9A9'],
+    '1F6F6',
+  ),
 ]

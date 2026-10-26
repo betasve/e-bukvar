@@ -42,4 +42,16 @@ export const regions: Region[] = [
       storyStop('r2', 'r2-story', ['ЛАМА', 'ЛУНА', 'ЕЛА', 'ЕЛЕН', 'ЛИМОН']),
     ],
   },
+  {
+    id: 'r3',
+    name: 'Река',
+    art: 'river.webp',
+    stops: [
+      letterStop('r3', 'r3-s1', ['Р'], ['МОРЕ', 'РАМО']),
+      letterStop('r3', 'r3-s2', ['С'], ['ЛИСА', 'СЛОН']),
+      letterStop('r3', 'r3-s3', ['Т'], ['ТОРТА', 'СТОЛ']),
+      letterStop('r3', 'r3-s4', ['Ъ'], ['ОСЪЛ', 'СЪН']),
+      storyStop('r3', 'r3-story', ['МОРЕ', 'ЛИСА', 'СЛОН', 'ТОРТА', 'СТОЛ', 'ОСЪЛ']),
+    ],
+  },
 ]
