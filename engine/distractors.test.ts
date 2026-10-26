@@ -30,3 +30,19 @@ test('syllableOptions only uses known letters and differs by one letter or order
 test('syllableOptions for МА with only А М returns МА and АМ', () => {
   expect(new Set(syllableOptions(mulberry32(1), 'МА', ['А', 'М'], 3))).toEqual(new Set(['МА', 'АМ']))
 })
+
+test('syllableOptions never offers two syllables that differ only by М and Н (ум/ун, ом/он)', () => {
+  const known = ['А', 'М', 'О', 'У', 'Л', 'Н', 'Е', 'И']
+  // Same length, one differing position, and that position holds М in one and Н in the other.
+  const mnPair = (a: string, b: string) => {
+    const diff = [...a].map((ch, i) => [ch, b[i]]).filter(([x, y]) => x !== y)
+    return a.length === b.length && diff.length === 1 && new Set(diff[0]).has('М') && new Set(diff[0]).has('Н')
+  }
+  for (const answer of ['УМ', 'УН', 'ОМ', 'ОН', 'АМ', 'АН', 'МА', 'НА', 'ЕН', 'ИМ']) {
+    for (let seed = 1; seed <= 30; seed++) {
+      const opts = syllableOptions(mulberry32(seed), answer, known, 3)
+      expect(opts.length, answer).toBeGreaterThanOrEqual(2)
+      for (const a of opts) for (const b of opts) if (a !== b) expect(mnPair(a, b), `${answer}: ${opts}`).toBe(false)
+    }
+  }
+})

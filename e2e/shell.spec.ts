@@ -28,5 +28,5 @@ test('album shows empty slots for a new profile', async ({ page }) => {
   await page.getByTestId('open-album').click()
   await expect(page.getByTestId('album')).toBeVisible()
   await expect(page.locator('[data-sticker][data-collected="true"]')).toHaveCount(0)
-  await expect(page.locator('[data-sticker]')).toHaveCount(18)
+  await expect(page.locator('[data-sticker]')).toHaveCount(34) // 16 + 1 large per region
 })

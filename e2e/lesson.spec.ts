@@ -86,6 +86,23 @@ test('handwritten letters are primer images in the same case as the printed lett
   expect(checked).toBeGreaterThan(0)
 })
 
+test('words to read are split into syllables', async ({ page }) => {
+  test.setTimeout(FULL_LESSON_MS)
+  await startWithNewProfile(page)
+  await openStop(page, 'r1-s1')
+  let checked = 0
+  while (!(await page.getByTestId('lesson-done').isVisible())) {
+    const ex = page.getByTestId('exercise')
+    if ((await ex.getAttribute('data-kind')) === 'read-match') {
+      const shown = (await page.getByTestId('read-word').textContent())!.trim()
+      expect(shown).toBe('МА-МА')
+      checked++
+    }
+    await solveOne(page)
+  }
+  expect(checked).toBeGreaterThan(0)
+})
+
 test('all options are within the viewport', async ({ page }) => {
   test.setTimeout(FULL_LESSON_MS)
   await startWithNewProfile(page)

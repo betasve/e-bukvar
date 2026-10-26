@@ -28,6 +28,20 @@ export function syllableOptions(rng: Rng, answer: string, known: LetterId[], max
       oneOff.push(chars.map((x, j) => (j === i ? k : x)).join(''))
     }
   })
-  const candidates = [...new Set([reversed, ...shuffle(rng, oneOff)])].filter((s) => s !== answer)
-  return shuffle(rng, [answer, ...candidates.slice(0, max - 1)])
+  const chosen = [answer]
+  for (const s of new Set([reversed, ...shuffle(rng, oneOff)])) {
+    if (chosen.length === max) break
+    if (!chosen.some((c) => c === s || soundAlike(c, s))) chosen.push(s)
+  }
+  return shuffle(rng, chosen)
+}
+
+// Letters too alike by ear to tell apart in a choice set: ум/ун, ом/он.
+const SOUND_ALIKE = [new Set(['М', 'Н'])]
+
+/** Two syllables that differ in one position only, by a pair of sound-alike letters. */
+function soundAlike(a: string, b: string): boolean {
+  if (a.length !== b.length) return false
+  const diff = [...a].flatMap((ch, i) => (ch === b[i] ? [] : [[ch, b[i]]]))
+  return diff.length === 1 && SOUND_ALIKE.some((pair) => diff[0].every((ch) => pair.has(ch)))
 }

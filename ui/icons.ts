@@ -8,4 +8,5 @@ export const ICONS = {
   next: '27A1',
   album: '1F5BC',
   close: '274C',
+  trophy: '1F3C6',
 } as const

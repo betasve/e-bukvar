@@ -45,7 +45,7 @@ test('5th first-try correct awards a region sticker and resets meter', () => {
 test('stickers are not awarded twice while uncollected ones remain', () => {
   let p = emptyProgress('p')
   const got: string[] = []
-  for (let i = 0; i < METER_SIZE * 20; i++) {
+  for (let i = 0; i < METER_SIZE * (content.stickers.length + 4); i++) {
     const r = answer(p, 'syl:МА', true, i)
     p = r.progress
     if (r.sticker) got.push(r.sticker)
@@ -76,4 +76,19 @@ test('recordAnswer does not mutate its input', () => {
   answer(p, 'syl:МА', true)
   completeStop(content, p, 'r1-s1', 1)
   expect(p).toEqual(before)
+})
+
+test('a first playthrough earns a new sticker at the end of every stop, even when every answer is right', () => {
+  const MAX_SCORED = 12 // a lesson has at most 12 exercises
+  let p = emptyProgress('p')
+  let t = 0
+  for (const region of content.regions) {
+    for (const stop of region.stops) {
+      for (let i = 0; i < MAX_SCORED; i++) p = recordAnswer(content, p, `syl:${i}`, true, region.id, t++).progress
+      const end = completeStop(content, p, stop.id, t++)
+      p = end.progress
+      const normal = end.stickers.filter((id) => !content.stickers.find((s) => s.id === id)?.large)
+      expect(normal, stop.id).toHaveLength(1)
+    }
+  }
 })

@@ -153,6 +153,9 @@
         {#each done as id (id)}
           {@const s = content.stickers.find((x) => x.id === id)}
           {#if s}<span data-earned={id}><Picture hex={s.picture} size={s.large ? 160 : 110} /></span>{/if}
+        {:else}
+          <!-- Every sticker is already collected (a replay): still end on a reward. -->
+          <span data-testid="done-trophy"><Picture hex={ICONS.trophy} size={140} /></span>
         {/each}
       </div>
       <button class="big-button" data-testid="done-back" aria-label="Към пътечката" onclick={exit}>
