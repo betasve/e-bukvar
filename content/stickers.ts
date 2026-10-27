@@ -44,4 +44,13 @@ export const stickers: StickerDef[] = [
      '1F9ED', '1F525', '1F9D7', '1F3D4'],
     '26F0',
   ),
+  // Село: farm animals, the garden and the yard
+  ...pool(
+    'r5',
+    // prettier-ignore
+    ['1F413', '1F414', '1F423', '1F416', '1F415', '1F983', '1F95A', '1F955',
+     '1F33D', '1F345', '1F954', '1F952', '1F346', '1F69C', '1F6B2', '1FAA3',
+     '1F9FA', '1F36F', '1F347', '1F9C0'],
+    '1F3E1',
+  ),
 ]
