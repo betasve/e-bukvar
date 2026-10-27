@@ -35,4 +35,13 @@ export const stickers: StickerDef[] = [
      '1F99E', '1FAA8', '1F327', '1F3D5'],
     '1F6F6',
   ),
+  // Планина: mountain animals, snow and hiking
+  ...pool(
+    'r4',
+    // prettier-ignore
+    ['1F410', '1F411', '1F40F', '1F404', '1F40E', '1F9AC', '26C4', '2744',
+     '1F328', '1F3BF', '1F6F7', '26F7', '1F3C2', '1F9E3', '1F9E4', '1F392',
+     '1F9ED', '1F525', '1F9D7', '1F3D4'],
+    '26F0',
+  ),
 ]
