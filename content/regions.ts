@@ -64,7 +64,7 @@ export const regions: Region[] = [
     name: 'Планина',
     art: 'mountain.webp',
     stops: [
-      letterStop('r4', 'r4-s1', ['Я'], ['МЯСО', 'ЯМА']),
+      letterStop('r4', 'r4-s1', ['Я'], ['МЯСТО', 'ЯМА']),
       letterStop('r4', 'r4-s2', ['Д'], ['ДЯДО', 'ДОМ', 'ВОДА', 'ДИНЯ']),
       letterStop('r4', 'r4-s3', ['К'], ['КОТКА', 'КОН', 'РАКЕТА', 'ЯБЪЛКА']),
       letterStop('r4', 'r4-s4', ['Г'], ['ГЪБА', 'ГЪСКА', 'ЯГОДА']),

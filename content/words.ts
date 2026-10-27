@@ -27,7 +27,7 @@ export const words: Word[] = [
   { text: 'ВАНА', syllables: ['ВА', 'НА'], picture: '1F6C1' },
   { text: 'ПИЛЕ', syllables: ['ПИ', 'ЛЕ'], picture: '1F425' },
   { text: 'ЛАПА', syllables: ['ЛА', 'ПА'], picture: '1F43E' },
-  { text: 'МЯСО', syllables: ['МЯ', 'СО'], picture: '1F356' },
+  { text: 'МЯСТО', syllables: ['МЯС', 'ТО'], picture: '1F4CD' },
   { text: 'ЯМА', syllables: ['Я', 'МА'], picture: '1F573' },
   { text: 'ДОМ', syllables: ['ДОМ'], picture: '1F3E0' },
   { text: 'ДЯДО', syllables: ['ДЯ', 'ДО'], picture: '1F474' },
