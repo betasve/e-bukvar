@@ -119,3 +119,50 @@ test('all options are within the viewport', async ({ page }) => {
     await solveOne(page)
   }
 })
+
+/** Drags with a pointer in small steps, the way a finger moves. */
+async function drag(page: Page, from: { x: number; y: number }, to: { x: number; y: number }) {
+  await page.mouse.move(from.x, from.y)
+  await page.mouse.down()
+  await page.mouse.move(to.x, to.y, { steps: 12 })
+  await page.mouse.up()
+}
+
+const centre = async (loc: ReturnType<Page['locator']>) => {
+  const b = (await loc.boundingBox())!
+  return { x: b.x + b.width / 2, y: b.y + b.height / 2 }
+}
+
+async function openBuildWord(page: Page) {
+  await startWithNewProfile(page)
+  await openStop(page, 'r1-s1')
+  while ((await page.getByTestId('exercise').getAttribute('data-kind')) !== 'build-word') await solveOne(page)
+}
+
+test('syllables are dragged into the slots to build the word', async ({ page }) => {
+  test.setTimeout(FULL_LESSON_MS)
+  await openBuildWord(page)
+  const ex = page.getByTestId('exercise')
+  const index = (await ex.getAttribute('data-index'))!
+  const syllables = (await ex.getAttribute('data-answer'))!.split('-')
+  for (const [slot, s] of syllables.entries()) {
+    const tile = page.locator(`[data-tile="${s}"]:not([disabled])`).first()
+    await drag(page, await centre(tile), await centre(page.locator(`[data-slot="${slot}"]`)))
+    if (slot < syllables.length - 1) await expect(page.locator(`[data-slot="${slot}"]`)).toHaveText(s)
+  }
+  await page.waitForFunction(
+    (i) => document.querySelector('[data-testid="exercise"]')?.getAttribute('data-index') !== i,
+    index,
+  )
+})
+
+test('a syllable dropped outside the slots goes back to its place', async ({ page }) => {
+  test.setTimeout(FULL_LESSON_MS)
+  await openBuildWord(page)
+  const tile = page.locator('[data-tile]:not([disabled])').first()
+  const start = await centre(tile)
+  await drag(page, start, { x: start.x, y: 5 })
+  await expect(page.locator('[data-slot="0"]')).toHaveText('')
+  await expect(tile).toBeVisible()
+  expect(await centre(tile)).toEqual(start)
+})
