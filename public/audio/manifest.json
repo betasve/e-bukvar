@@ -228,9 +228,9 @@
   "word:ВОДА": "da15157ae9b9064e.mp3",
   "word:ГЪБА": "932b0de32149247c.mp3",
   "word:ГЪСКА": "27676b563ed33658.mp3",
-  "word:ДЕДО": "af199d017ca48a17.mp3",
   "word:ДИНЯ": "6ded52e2d28c6c7d.mp3",
   "word:ДОМ": "1dd6c41c79463f03.mp3",
+  "word:ДЯДО": "d6796a9266ebd50c.mp3",
   "word:ЕЛА": "9032fa9c080188e1.mp3",
   "word:ЕЛЕН": "fce573d124c00300.mp3",
   "word:ЗАЕК": "648d9377ccb3260c.mp3",
@@ -248,6 +248,7 @@
   "word:МАМО": "7567163dfe560d8d.mp3",
   "word:МОМА": "394afbe8a0db8c03.mp3",
   "word:МОРЕ": "b5823f70397276c3.mp3",
+  "word:МЯСО": "43e1e1c234137333.mp3",
   "word:ПИЛЕ": "c08d7a4a659825ed.mp3",
   "word:РАКЕТА": "7f0ac6412b3baf45.mp3",
   "word:РАМО": "af8bcab36aa3cf0e.mp3",
@@ -260,5 +261,6 @@
   "word:ТРЪН": "6438b54b78ef4f9a.mp3",
   "word:УМА": "78426802ac20a546.mp3",
   "word:ЯБЪЛКА": "bf871a523d165336.mp3",
-  "word:ЯГОДА": "6d74240cca4d809c.mp3"
+  "word:ЯГОДА": "6d74240cca4d809c.mp3",
+  "word:ЯМА": "f626648603ea601b.mp3"
 }
