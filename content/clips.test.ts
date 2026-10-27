@@ -26,7 +26,7 @@ test('allClips covers letters, syllables, words and phrases with spoken text', (
 test('allClips only includes letters taught in the journey', () => {
   const clips = byKey()
   expect(clips.has('letter:И')).toBe(true)
-  expect(clips.has('letter:Б')).toBe(false)
+  expect(clips.has('letter:Ж')).toBe(false)
 })
 
 const loadManifest = (): Record<string, string> => {

@@ -1,5 +1,5 @@
 import { openDB, type IDBPDatabase } from 'idb'
-import { emptyProgress, type Progress } from '../engine/progress'
+import { emptyProgress, migrateProgress, type Progress } from '../engine/progress'
 import type { Profile, ProgressStore } from './store'
 
 const DB_NAME = 'reading-app'
@@ -30,12 +30,13 @@ export class IdbStore implements ProgressStore {
   async loadProgress(profileId: string): Promise<Progress> {
     const stored = await this.db.get('progress', profileId)
     if (!stored) return emptyProgress(profileId)
-    if (stored.schemaVersion !== 1) {
-      // Unknown format: keep the raw record so nothing is lost, start fresh.
-      await this.db.add('backups', stored)
-      return emptyProgress(profileId)
-    }
-    return stored
+    if (stored.schemaVersion === 2) return stored
+    // Older or unknown format: keep the raw record so nothing is lost, then convert or start fresh.
+    await this.db.add('backups', stored)
+    const migrated = migrateProgress(stored)
+    if (!migrated) return emptyProgress(profileId)
+    await this.saveProgress(migrated)
+    return migrated
   }
 
   async saveProgress(p: Progress): Promise<void> {

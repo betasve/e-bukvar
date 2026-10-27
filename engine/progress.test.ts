@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import { content } from '../content'
-import { completeStop, emptyProgress, knownItems, METER_SIZE, recordAnswer, type Progress } from './progress'
+import { completeStop, emptyProgress, knownItems, METER_SIZE, migrateProgress, recordAnswer, type Progress } from './progress'
 
 const answer = (p: Progress, item: string, firstTry: boolean, now = 1) =>
   recordAnswer(content, p, item, firstTry, 'r1', now)
@@ -62,7 +62,7 @@ test('completeStop always awards one sticker', () => {
 
 test('completing the last stop of a region also awards the large sticker once', () => {
   let p = emptyProgress('p')
-  for (const id of ['r1-s1', 'r1-s2', 'r1-s3']) p = completeStop(content, p, id, 1).progress
+  for (const id of ['r1-s1', 'r1-s2', 'r1-s3', 'r1-s4']) p = completeStop(content, p, id, 1).progress
   const last = completeStop(content, p, 'r1-story', 2)
   expect(last.stickers).toContain('r1-big')
   const replay = completeStop(content, last.progress, 'r1-story', 3)
@@ -91,4 +91,24 @@ test('a first playthrough earns a new sticker at the end of every stop, even whe
       expect(normal, stop.id).toHaveLength(1)
     }
   }
+})
+
+test('migrateProgress moves every version 1 stop to its place in the regrouped journey', () => {
+  const done = { completed: true, plays: 1 }
+  const v1Ids = ['r1-s1', 'r1-s2', 'r1-s3', 'r1-story', 'r2-s1', 'r2-s2', 'r2-s3', 'r2-s4', 'r2-story']
+  const v1 = { ...emptyProgress('p'), schemaVersion: 1, stops: Object.fromEntries([...v1Ids, 'r3-s1', 'r3-s2', 'r3-s3', 'r3-s4', 'r3-story'].map((id) => [id, done])) }
+  const v2 = migrateProgress(v1)!
+  expect(v2.schemaVersion).toBe(2)
+  // Each new stop was finished under its old name: А М, О, У, Л | Н, Е, И, Р, С | Т, Ъ.
+  expect(Object.keys(v2.stops).sort()).toEqual(
+    ['r1-s1', 'r1-s2', 'r1-s3', 'r1-s4', 'r1-story', 'r2-s1', 'r2-s2', 'r2-s3', 'r2-s4', 'r2-s5', 'r2-story', 'r3-s1', 'r3-s2', 'r3-story'].sort(),
+  )
+  for (const id of Object.keys(v2.stops)) expect(content.regions.flatMap((r) => r.stops).some((s) => s.id === id), id).toBe(true)
+  expect(migrateProgress({ ...v2 })).toEqual(v2)
+  expect(migrateProgress({ ...v1, schemaVersion: 99 })).toBeNull()
+})
+
+test('the regrouped journey puts each version 1 stop letter where the migration says', () => {
+  const letterOf = (id: string) => content.regions.flatMap((r) => r.stops).find((s) => s.id === id)!.newLetters.join('')
+  expect(['r1-s4', 'r2-s1', 'r2-s4', 'r2-s5', 'r3-s1', 'r3-s2'].map(letterOf)).toEqual(['Л', 'Н', 'Р', 'С', 'Т', 'Ъ'])
 })

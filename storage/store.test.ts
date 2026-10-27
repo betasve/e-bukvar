@@ -51,10 +51,27 @@ test('IdbStore persists across reopening', async () => {
 test('unknown schemaVersion is backed up and replaced by empty progress', async () => {
   const store = await IdbStore.open()
   const db = await openDB('reading-app', 1)
-  const future = { ...sample(), schemaVersion: 2 }
+  const future = { ...sample(), schemaVersion: 99 }
   await db.put('progress', future)
   expect(await store.loadProgress('kid')).toEqual(emptyProgress('kid'))
   expect(await db.getAll('backups')).toEqual([future])
+})
+
+test('version 1 progress is backed up and converted to the regrouped journey', async () => {
+  const store = await IdbStore.open()
+  const db = await openDB('reading-app', 1)
+  // Old layout: Л was Гора's first stop (r2-s1), Р and С were Река's first stops.
+  const v1 = {
+    ...sample(),
+    schemaVersion: 1,
+    stops: { 'r2-s1': { completed: true, plays: 1 }, 'r3-s2': { completed: true, plays: 3 } },
+  }
+  await db.put('progress', v1)
+  const loaded = await store.loadProgress('kid')
+  expect(loaded.schemaVersion).toBe(2)
+  expect(loaded.stops).toEqual({ 'r1-s4': { completed: true, plays: 1 }, 'r2-s5': { completed: true, plays: 3 } })
+  expect(await db.getAll('backups')).toEqual([v1])
+  expect(await store.loadProgress('kid')).toEqual(loaded) // converted once, then saved
 })
 
 test('openStore falls back to MemoryStore when indexedDB.open throws', async () => {

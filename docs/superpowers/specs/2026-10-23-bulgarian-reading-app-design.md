@@ -37,7 +37,7 @@ A web app that teaches a 6-year-old to read in Bulgarian. The primary user is th
 | Audio | Generated once at build time with Azure TTS (free F0 tier, Bulgarian neural voice); committed MP3 files | No recordings; total volume (~10–20k chars) is far under the free tier; runtime has no TTS dependency |
 | Pictures | OpenMoji (CC BY-SA 4.0, attribution required) | Free, consistent illustrations across devices |
 | Interface language | Bulgarian only; instructions spoken + icons | The child cannot read instructions yet |
-| Letter case | Capitals first; lowercase introduced from region 4 | Matches common primer practice |
+| Letter case | Capitals only for the whole alphabet; lowercase comes after all 30 capitals (revised 2026-10-27) | Matches common primer practice; one thing at a time |
 
 ## 4. Architecture
 
@@ -61,20 +61,20 @@ tools/     Dev-only: generate-audio script; audio review page.
 
 ### 5.1 Journey and letter order
 
-Six regions on a map, each a group of letters. Order is chosen so real syllables are possible from the first stop: vowels and continuant consonants first, hard letters last.
+Six regions on a map, each a group of five letters (revised 2026-10-27, at the user's request: equal regions, easier letters first). Order is chosen so real syllables are possible from the first stop: vowels and continuant consonants first, hard letters last.
 
 | # | Region | Letters | Example words |
 |---|---|---|---|
-| 1 | Поляна | А, М, О, У | МАМА |
-| 2 | Гора | Л, Н, Е, И | ЛУНА, ЛАМА, ЛИМОН |
-| 3 | Река | Р, С, Т, Ъ | СОМ, СТОЛ, ТОРТА |
-| 4 | Планина | Б, В, П, Д, К, Г | БАБА, ДОМ, РИБА, КОТКА |
-| 5 | Село | З, Ж, Ш, Ч, Ц, Х, Ф, Й | ЖАБА, ЧАША, ШАПКА |
-| 6 | Море | Я, Ю, Щ, Ь | ЯБЪЛКА, ЯГОДА |
+| 1 | Поляна | А, М, О, У, Л | МАМА, ЛАМА |
+| 2 | Гора | Н, Е, И, Р, С | ЛУНА, ЛИМОН, МОРЕ, ЛИСА |
+| 3 | Река | Т, Ъ, Б, В, П | ТОРТА, СЪН, РИБА, СОВА, ПИЛЕ |
+| 4 | Планина | Д, К, Г, З, Я | ДОМ, КОТКА, ГЪБА, КОЗА, ЯБЪЛКА |
+| 5 | Село | Ж, Ш, Ч, Ц, Х | ЖАБА, МИШКА, ЧАША, ПИЦА, ХЛЯБ |
+| 6 | Море | Ф, Ю, Й, Щ, Ь | ФОКА, КЛЮЧ, ЧАЙ, КЪЩА, МЕДАЛЬОН |
 
 - Each **stop** introduces one new letter. Blending at a stop uses only letters already introduced.
 - Each region ends with a **story stop**: a few words, later short phrases.
-- **Letter case:** regions 1–3 use capitals only (print and handwritten). Region 4 opens with a **"малки букви" stop** introducing lowercase for the 12 letters known so far. From region 4 on, new letters come as capital + lowercase pairs and exercises mix both, shifting towards lowercase. Case is a per-stop setting in `content/`.
+- **Letter case:** all six regions use capitals only (print and handwritten). Lowercase comes afterwards, as its own stage after the whole capital alphabet; it is not designed yet. Case is a per-stop setting in `content/`.
 - Letters are voiced by their sound names ("а", "мъ", "лъ"), as taught in Bulgarian schools.
 
 ### 5.2 Exercise types

@@ -10,7 +10,7 @@ export interface ItemState {
 }
 
 export interface Progress {
-  schemaVersion: 1
+  schemaVersion: 2
   profileId: string
   stops: Record<string, { completed: boolean; plays: number }>
   items: Record<ItemId, ItemState>
@@ -21,7 +21,28 @@ export interface Progress {
 export const METER_SIZE = 5
 
 export function emptyProgress(profileId: string): Progress {
-  return { schemaVersion: 1, profileId, stops: {}, items: {}, stickers: [], meter: 0 }
+  return { schemaVersion: 2, profileId, stops: {}, items: {}, stickers: [], meter: 0 }
+}
+
+// Version 2 regrouped the journey into five letters per region: Л moved into Поляна,
+// Р and С into Гора. Stop ids are positions, so finished stops are renamed.
+const V1_TO_V2_STOPS: Record<string, string> = {
+  'r2-s1': 'r1-s4', // Л
+  'r2-s2': 'r2-s1', // Н
+  'r2-s3': 'r2-s2', // Е
+  'r2-s4': 'r2-s3', // И
+  'r3-s1': 'r2-s4', // Р
+  'r3-s2': 'r2-s5', // С
+  'r3-s3': 'r3-s1', // Т
+  'r3-s4': 'r3-s2', // Ъ
+}
+
+/** Brings saved progress up to the current schema, or null for a version it does not know. */
+export function migrateProgress(stored: Omit<Progress, 'schemaVersion'> & { schemaVersion: number }): Progress | null {
+  if (stored.schemaVersion === 2) return { ...stored, schemaVersion: 2 }
+  if (stored.schemaVersion !== 1) return null
+  const stops = Object.fromEntries(Object.entries(stored.stops).map(([id, s]) => [V1_TO_V2_STOPS[id] ?? id, s]))
+  return { ...stored, schemaVersion: 2, stops }
 }
 
 /** Items she knows: review box 3 or higher. */

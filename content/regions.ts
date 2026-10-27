@@ -18,6 +18,8 @@ const storyStop = (regionId: string, id: string, words: string[]): Stop => ({
   words,
 })
 
+// Five letters per region, easier ones first (see the design spec, section 5.1).
+// Stop ids are positions, so moving a stop needs a progress migration (engine/progress.ts).
 export const regions: Region[] = [
   {
     id: 'r1',
@@ -27,7 +29,8 @@ export const regions: Region[] = [
       letterStop('r1', 'r1-s1', ['А', 'М'], ['МАМА']),
       letterStop('r1', 'r1-s2', ['О'], ['МАМО', 'МОМА']),
       letterStop('r1', 'r1-s3', ['У'], ['УМА']),
-      storyStop('r1', 'r1-story', ['МАМА', 'МАМО', 'МОМА']),
+      letterStop('r1', 'r1-s4', ['Л'], ['ЛАМА']),
+      storyStop('r1', 'r1-story', ['МАМА', 'МАМО', 'МОМА', 'ЛАМА']),
     ],
   },
   {
@@ -35,11 +38,12 @@ export const regions: Region[] = [
     name: 'Гора',
     art: 'forest.webp',
     stops: [
-      letterStop('r2', 'r2-s1', ['Л'], ['ЛАМА']),
-      letterStop('r2', 'r2-s2', ['Н'], ['ЛУНА']),
-      letterStop('r2', 'r2-s3', ['Е'], ['ЛАЛЕ', 'ЕЛА', 'ЕЛЕН']),
-      letterStop('r2', 'r2-s4', ['И'], ['ЛИМОН']),
-      storyStop('r2', 'r2-story', ['ЛАМА', 'ЛУНА', 'ЕЛА', 'ЕЛЕН', 'ЛИМОН']),
+      letterStop('r2', 'r2-s1', ['Н'], ['ЛУНА']),
+      letterStop('r2', 'r2-s2', ['Е'], ['ЛАЛЕ', 'ЕЛА', 'ЕЛЕН']),
+      letterStop('r2', 'r2-s3', ['И'], ['ЛИМОН']),
+      letterStop('r2', 'r2-s4', ['Р'], ['МОРЕ', 'РАМО']),
+      letterStop('r2', 'r2-s5', ['С'], ['ЛИСА', 'СЛОН']),
+      storyStop('r2', 'r2-story', ['ЛУНА', 'ЛАЛЕ', 'ЕЛЕН', 'ЛИМОН', 'МОРЕ', 'РАМО', 'ЛИСА', 'СЛОН']),
     ],
   },
   {
@@ -47,11 +51,12 @@ export const regions: Region[] = [
     name: 'Река',
     art: 'river.webp',
     stops: [
-      letterStop('r3', 'r3-s1', ['Р'], ['МОРЕ', 'РАМО']),
-      letterStop('r3', 'r3-s2', ['С'], ['ЛИСА', 'СЛОН']),
-      letterStop('r3', 'r3-s3', ['Т'], ['ТОРТА', 'СТОЛ']),
-      letterStop('r3', 'r3-s4', ['Ъ'], ['СЪН', 'ТРЪН']),
-      storyStop('r3', 'r3-story', ['МОРЕ', 'РАМО', 'ЛИСА', 'СЛОН', 'ТОРТА', 'СТОЛ', 'СЪН', 'ТРЪН']),
+      letterStop('r3', 'r3-s1', ['Т'], ['ТОРТА', 'СТОЛ']),
+      letterStop('r3', 'r3-s2', ['Ъ'], ['СЪН', 'ТРЪН']),
+      letterStop('r3', 'r3-s3', ['Б'], ['БАБА', 'РИБА', 'БАНАН']),
+      letterStop('r3', 'r3-s4', ['В'], ['СОВА', 'ВАНА']),
+      letterStop('r3', 'r3-s5', ['П'], ['ПИЛЕ', 'ЛАПА']),
+      storyStop('r3', 'r3-story', ['ТОРТА', 'СТОЛ', 'ТРЪН', 'БАБА', 'РИБА', 'БАНАН', 'СОВА', 'ПИЛЕ']),
     ],
   },
 ]
