@@ -77,7 +77,7 @@ describe('content', () => {
 
   test('every region background image exists in public/regions', () => {
     const withArt = content.regions.filter((r) => r.art)
-    expect(withArt.map((r) => r.id)).toEqual(expect.arrayContaining(['r1', 'r2', 'r3', 'r4', 'r5']))
+    expect(withArt.map((r) => r.id)).toEqual(expect.arrayContaining(['r1', 'r2', 'r3', 'r4', 'r5', 'r6']))
     for (const r of withArt) expect(existsSync(`public/regions/${r.art}`), r.id).toBe(true)
   })
 
@@ -89,7 +89,7 @@ describe('content', () => {
     }
   })
 
-  test('regions 1–5 use capitals only', () => {
+  test('all regions use capitals only', () => {
     for (const stop of allStops(content)) expect(stop.case).toBe('upper')
   })
 })

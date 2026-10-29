@@ -26,3 +26,15 @@ test('syllablesForStop r1-s2 contains МО and ОМ but not МА', () => {
 test('syllablesForStop for a story stop is the syllables of its words', () => {
   expect(new Set(syllablesForStop(content, 'r1-story'))).toEqual(new Set(['МА', 'МО', 'ЛА']))
 })
+
+test('the Й stop pairs each vowel with Й, never Й first', () => {
+  const s = syllablesForStop(content, 'r6-s3')
+  expect(s).toEqual(expect.arrayContaining(['АЙ', 'ОЙ', 'ЕЙ']))
+  for (const x of s) expect(x).toMatch(/^[АЕИОУ]Й$/)
+})
+
+test('the Ь stop puts Ь between a consonant and О', () => {
+  const s = syllablesForStop(content, 'r6-s5')
+  expect(s).toEqual(expect.arrayContaining(['ЛЬО', 'НЬО']))
+  for (const x of s) expect(x).toMatch(/^[БВГДЗКЛМНПРСТФ]ЬО$/)
+})

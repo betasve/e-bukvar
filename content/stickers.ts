@@ -53,4 +53,13 @@ export const stickers: StickerDef[] = [
      '1F9FA', '1F36F', '1F347', '1F9C0'],
     '1F3E1',
   ),
+  // Море: sea creatures and the beach
+  ...pool(
+    'r6',
+    // prettier-ignore
+    ['1F433', '1F42C', '1F988', '1F419', '1F991', '1FAB8', '1FABC', '1F9AD',
+     '1F3D6', '26F1', '1F3C4', '2693', '1F334', '1F965', '1F9DC', '1F6DF',
+     '1FA74', '1F576', '1F366', '1F40B'],
+    '1F6A2',
+  ),
 ]

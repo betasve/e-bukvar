@@ -26,3 +26,9 @@
 - `bg-BG-KalinaNeural` at the default rate, chosen by the user after listening to both voices at normal and slow speed.
 - Letter sounds use the "consonant + ъ" spelling (`лъ`, `нъ`), which sounds right — except М: `мъ` is read as the letter name "ем", and every variant (`ммъ`, `мъ.`, `Мъ`, …) failed except a bare `м`. So `content/overrides.ts` maps `letter:М` to `м`.
 - Other consonants (regions 3–6) may need their own overrides; check them on `/review.html` when they are added.
+
+## Й and Ь syllables (2026-10-29)
+
+- Neither letter makes a consonant+vowel pair, so their stops had no syllables at all (an empty blending demo, no syllable practice).
+- Й is taught after a vowel (АЙ, ОЙ, ЕЙ, ИЙ, УЙ); Ь as consonant+ЬО (ЛЬО, НЬО, …) after the consonants that take it (Б В Г Д З К Л М Н П Р С Т Ф).
+- The Ь stop has no blending demo (it slides two letters together; ЛЬО is three). Syllable choices never offer what can't be written: Й or Ь first, Ь not before О, ЪЙ, or Ь after Ж Ч Ш Щ Ц.

@@ -39,11 +39,24 @@ test('lesson starts with hear-letter for each new letter', () => {
   expect(firstLetters.map((e) => (e as { letter: string }).letter)).toEqual(['А', 'М'])
 })
 
-test('letter stops show one blending demo and no drag-to-blend step', () => {
+test('letter stops show one two-letter blending demo and no drag-to-blend step', () => {
   for (const stop of allStops(content).filter((s) => s.kind === 'letter')) {
-    const kinds: string[] = lesson(stop.id).map((e) => e.kind)
-    expect(kinds.filter((k) => k === 'watch-blend'), stop.id).toHaveLength(1)
-    expect(kinds, stop.id).not.toContain('blend')
+    const ex = lesson(stop.id)
+    const demos = ex.flatMap((e) => (e.kind === 'watch-blend' ? [e.syllable] : []))
+    // Ь only comes as consonant+ЬО, three letters, which the two-letter demo cannot show.
+    expect(demos, stop.id).toHaveLength(stop.newLetters.includes('Ь') ? 0 : 1)
+    for (const d of demos) expect(d, stop.id).toHaveLength(2)
+    expect(ex.map((e) => e.kind as string), stop.id).not.toContain('blend')
+  }
+})
+
+test('Й and Ь stops practise their own syllables', () => {
+  for (const [stopId, shape] of [
+    ['r6-s3', /Й$/],
+    ['r6-s5', /ЬО$/],
+  ] as const) {
+    const heard = lesson(stopId).flatMap((e) => (e.kind === 'hear-syllable' ? [e.syllable] : []))
+    expect(heard.filter((s) => shape.test(s)).length, stopId).toBeGreaterThan(0)
   }
 })
 

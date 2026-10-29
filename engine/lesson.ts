@@ -52,10 +52,11 @@ export function buildLesson(c: Content, stopId: string, progress: Progress, rng:
       })
     }
     const syllables = syllablesForStop(c, stopId)
-    // Prefer consonant+vowel for the blending demo: it is the shape she reads most.
-    const cv = syllables.filter((s) => isVowel(c, s[1]))
-    const demo = pick(rng, cv.length ? cv : syllables)
-    core.push({ kind: 'watch-blend', syllable: demo })
+    // The blending demo slides two letters together; prefer consonant+vowel, the shape she reads most.
+    // Ь stops have none (consonant+ЬО is three letters).
+    const pairs = syllables.filter((s) => s.length === 2)
+    const cv = pairs.filter((s) => isVowel(c, s[1]))
+    if (pairs.length) core.push({ kind: 'watch-blend', syllable: pick(rng, cv.length ? cv : pairs) })
     for (const s of shuffle(rng, syllables).slice(0, 2)) {
       const ex = hearSyllable(s)
       if (ex) core.push(ex)

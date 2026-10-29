@@ -2,6 +2,9 @@ import { allStops, type Content, type LetterId, type Stop } from '../content'
 
 // Letters that never form a simple two-letter syllable on their own.
 const NO_SYLLABLE = new Set(['Ь', 'Й'])
+// Й is taught after a vowel (АЙ, ОЙ) and Ь as the soft ЬО after these consonants (ЛЬО, НЬО).
+const BEFORE_Й = new Set(['А', 'Е', 'И', 'О', 'У'])
+const BEFORE_ЬО = new Set([...'БВГДЗКЛМНПРСТФ'])
 
 export function findStop(c: Content, stopId: string): Stop {
   const stop = allStops(c).find((s) => s.id === stopId)
@@ -25,7 +28,8 @@ export function isVowel(c: Content, id: LetterId): boolean {
 
 /**
  * Letter stops: every consonant+vowel and vowel+consonant pair from known letters
- * that contains at least one of the stop's new letters. Story stops: the syllables of their words.
+ * that contains at least one of the stop's new letters; Й and Ь get their own shapes
+ * (vowel+Й, consonant+ЬО). Story stops: the syllables of their words.
  */
 export function syllablesForStop(c: Content, stopId: string): string[] {
   const stop = findStop(c, stopId)
@@ -38,6 +42,8 @@ export function syllablesForStop(c: Content, stopId: string): string[] {
   const consonants = known.filter((l) => !isVowel(c, l))
   const fresh = new Set(stop.newLetters)
   const out: string[] = []
+  if (fresh.has('Й')) out.push(...vowels.filter((v) => BEFORE_Й.has(v)).map((v) => v + 'Й'))
+  if (fresh.has('Ь')) out.push(...consonants.filter((c) => BEFORE_ЬО.has(c)).map((c) => c + 'ЬО'))
   for (const cons of consonants) {
     for (const v of vowels) {
       if (!fresh.has(cons) && !fresh.has(v)) continue

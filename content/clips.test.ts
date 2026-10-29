@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { expect, test } from 'vitest'
 import { allClips, clipKey } from './clips'
 import { content } from './index'
+import { letters } from './letters'
 
 const byKey = (c = content) => new Map(allClips(c).map((s) => [s.key, s]))
 
@@ -23,10 +24,9 @@ test('allClips covers letters, syllables, words and phrases with spoken text', (
   expect(clips.get('say:bravo')?.text).toBe('Браво!')
 })
 
-test('allClips only includes letters taught in the journey', () => {
+test('the journey teaches every letter of the alphabet', () => {
   const clips = byKey()
-  expect(clips.has('letter:И')).toBe(true)
-  expect(clips.has('letter:Ф')).toBe(false)
+  for (const l of letters) expect(clips.has(`letter:${l.id}`), l.id).toBe(true)
 })
 
 const loadManifest = (): Record<string, string> => {

@@ -46,3 +46,14 @@ test('syllableOptions never offers two syllables that differ only by М and Н (
     }
   }
 })
+
+test('syllableOptions never start with Й or Ь, and Ь only comes before О after a consonant that softens', () => {
+  const known = [...'АЕИОУЪЛНМТЧЖЙЬ']
+  for (const answer of ['УЛ', 'АЙ', 'ЛЬО', 'ТЬО', 'МА', 'ТИ']) {
+    for (let seed = 1; seed <= 30; seed++) {
+      for (const o of syllableOptions(mulberry32(seed), answer, known, 3)) {
+        expect(o, `${answer}: ${o}`).not.toMatch(/^[ЙЬ]|Ь(?!О)|ЪЙ|[ЖЧШЩЦ]Ь/)
+      }
+    }
+  }
+})
