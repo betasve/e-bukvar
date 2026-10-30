@@ -70,7 +70,7 @@ Six regions on a map, each a group of five letters (revised 2026-10-27, at the u
 | 3 | Река | Т, Ъ, Б, В, П | ТОРТА, СЪН, РИБА, СОВА, ПИЛЕ |
 | 4 | Планина | Я, Д, К, Г, З | ДОМ, КОТКА, ГЪБА, КОЗА, ЯБЪЛКА |
 | 5 | Село | Ж, Ш, Ч, Ц, Х | ЖАБА, МИШКА, ЧАША, ПИЦА, ХЛЯБ |
-| 6 | Море | Ф, Ю, Й, Щ, Ь | ФОКА, КЛЮЧ, ЧАЙ, КЪЩА, МЕДАЛЬОН |
+| 6 | Море | Ф, Ю, Й, Щ, Ь | ФЛАГ, КЛЮЧ, ЧАЙ, КЪЩА, ПОЩАЛЬОН |
 
 - Each **stop** introduces one new letter. Blending at a stop uses only letters already introduced.
 - Each region ends with a **story stop**: a few words, later short phrases.

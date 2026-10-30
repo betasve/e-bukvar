@@ -289,6 +289,7 @@
   "syl:ФА": "69d39461f375711b.mp3",
   "syl:ФЕ": "e01d5fa5aef4929b.mp3",
   "syl:ФИ": "44b3c241c123eb2c.mp3",
+  "syl:ФЛАГ": "b5edd41bc2cbdb38.mp3",
   "syl:ФО": "1ae57472d854ffa2.mp3",
   "syl:ФУ": "636353af3013d752.mp3",
   "syl:ФЪ": "72f373f2b4cb9e7f.mp3",
@@ -452,7 +453,7 @@
   "word:ТРЪН": "6438b54b78ef4f9a.mp3",
   "word:УМА": "78426802ac20a546.mp3",
   "word:ФЕЯ": "5ae9e25f4d427fb5.mp3",
-  "word:ФОКА": "384907321b451e39.mp3",
+  "word:ФЛАГ": "b5edd41bc2cbdb38.mp3",
   "word:ФРИЗЬОР": "349e5efd9c89c649.mp3",
   "word:ХАМСТЕР": "f71ea21b2caf0b89.mp3",
   "word:ХЛЯБ": "fb8e62bab7202301.mp3",
@@ -463,10 +464,10 @@
   "word:ЧАША": "81b92fd722b14f18.mp3",
   "word:ЧЕРЕША": "f4c1cf440389e096.mp3",
   "word:ШАПКА": "84d0c0234fa37fa7.mp3",
+  "word:ЩИПКА": "a60bc9f46a08e780.mp3",
   "word:ЮМРУК": "5b8c91b3f69c81d5.mp3",
   "word:ЯБЪЛКА": "bf871a523d165336.mp3",
   "word:ЯГОДА": "6d74240cca4d809c.mp3",
   "word:ЯЙЦЕ": "8be2a9900be35944.mp3",
-  "word:ЯМА": "f626648603ea601b.mp3",
-  "word:ЯЩИК": "a7fb3605be2be1b3.mp3"
+  "word:ЯМА": "f626648603ea601b.mp3"
 }
